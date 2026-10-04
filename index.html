@@ -1,0 +1,275 @@
+<title>PartnerFit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout concept: a customs-manifest page — numbered line items, a running
+   index rail, and tabular rhythm rather than a marketing hero stack. */
+:root{
+  --bg:#f5f4f0; --fg:#1c2127; --muted:#5b6169; --surface:#ffffff;
+  --border:#ddd9cc; --accent:#9c6a2c; --accent-fg:#ffffff;
+  --mono:#6b6054;
+  --display:"Instrument Sans",system-ui,sans-serif;
+  --body:"Instrument Sans",system-ui,sans-serif;
+  --utility:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#11151c; --fg:#ebe8e0; --muted:#9a978d; --surface:#181d25;
+    --border:#2b313b; --accent:#d9a654; --accent-fg:#14100a; --mono:#8d8a7f;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11151c; --fg:#ebe8e0; --muted:#9a978d; --surface:#181d25;
+  --border:#2b313b; --accent:#d9a654; --accent-fg:#14100a; --mono:#8d8a7f;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);margin:0;
+  padding-inline:20px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);font-weight:650;letter-spacing:-0.01em;
+  text-wrap:balance;margin:0}
+p{margin:0}
+a{color:inherit}
+.wrap{max-width:920px;margin:0 auto}
+.eyebrow{font-family:var(--utility);font-size:12px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--mono)}
+
+/* ---- header ---- */
+header{display:flex;align-items:center;justify-content:space-between;
+  padding-block:22px;border-bottom:1px solid var(--border);
+  position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);
+  z-index:10;gap:12px;flex-wrap:wrap}
+.logo{font-family:var(--display);font-weight:700;font-size:19px;
+  display:flex;align-items:baseline;gap:8px}
+.logo .mark{display:inline-block;width:9px;height:9px;background:var(--accent);
+  border-radius:1px}
+nav{display:flex;gap:22px;font-size:14px;color:var(--muted)}
+nav a{text-decoration:none}
+nav a:hover{color:var(--fg)}
+
+/* ---- hero ---- */
+.hero{padding-block:64px 48px;border-bottom:1px solid var(--border)}
+.hero .eyebrow{margin-bottom:16px}
+.hero h1{font-size:clamp(32px,5vw,50px);line-height:1.08;max-width:14ch}
+.hero .sub{margin-top:20px;max-width:46ch;font-size:17px;color:var(--muted)}
+.hero .ctas{margin-top:32px;display:flex;gap:12px;flex-wrap:wrap}
+.btn{font-family:var(--body);font-size:14px;font-weight:600;padding:12px 20px;
+  border-radius:3px;border:1px solid var(--border);text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;cursor:pointer;background:none;color:var(--fg)}
+.btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.btn:hover{border-color:var(--accent)}
+
+/* ---- manifest-line section header ---- */
+.line{display:flex;gap:18px;align-items:baseline;padding-block:40px 24px}
+.line .idx{font-family:var(--utility);font-size:13px;color:var(--accent);
+  flex-shrink:0;padding-top:4px}
+.line h2{font-size:24px}
+
+section{border-bottom:1px solid var(--border)}
+section:last-of-type{border-bottom:none}
+.section-body{padding-bottom:48px}
+
+/* ---- audience cards ---- */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:4px;
+  padding:22px;min-width:0}
+.card .tag{font-family:var(--utility);font-size:11px;color:var(--accent);
+  text-transform:uppercase;letter-spacing:.06em}
+.card h3{font-size:17px;margin-top:8px}
+.card p{margin-top:10px;font-size:14px;color:var(--muted)}
+
+/* ---- process ---- */
+.process{display:flex;flex-direction:column}
+.step{display:grid;grid-template-columns:40px 1fr;gap:16px;padding-block:16px;
+  border-top:1px solid var(--border)}
+.step:first-child{border-top:none}
+.step .num{font-family:var(--utility);font-size:13px;color:var(--mono);padding-top:2px}
+.step .label{font-weight:600;font-size:15px}
+.step .desc{margin-top:4px;font-size:14px;color:var(--muted);max-width:60ch}
+
+/* ---- differentiators ---- */
+.grid4{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.feat{min-width:0}
+.feat .eyebrow{color:var(--accent)}
+.feat h3{font-size:16px;margin-top:6px}
+.feat p{margin-top:8px;font-size:14px;color:var(--muted)}
+
+/* ---- contact ---- */
+.contact{padding-block:48px;display:flex;flex-direction:column;gap:18px}
+.contact h2{font-size:26px;max-width:18ch}
+.contact-row{display:flex;gap:28px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.addr-box{display:flex;align-items:center;gap:10px;background:var(--surface);
+  border:1px solid var(--border);border-radius:3px;padding:10px 14px;
+  font-family:var(--utility);font-size:14px}
+.copybtn{border:none;background:none;color:var(--accent);font-family:var(--utility);
+  font-size:12px;cursor:pointer;padding:4px}
+.note{font-size:13px;color:var(--mono)}
+
+footer{padding-block:28px;display:flex;justify-content:space-between;gap:12px;
+  flex-wrap:wrap;font-size:13px;color:var(--mono)}
+
+@media (max-width:620px){
+  .grid2,.grid4{grid-template-columns:1fr}
+  nav{gap:14px;font-size:13px}
+  .hero{padding-block:44px 32px}
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="logo"><span class="mark"></span>PartnerFit</div>
+    <nav>
+      <a href="#service">서비스</a>
+      <a href="#process">작동 방식</a>
+      <a href="#edge">차별성</a>
+      <a href="#contact">문의</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">AI 기반 글로벌 바이어 · 서플라이어 발굴</div>
+    <h1>해외 거래 파트너를 찾는 3일을,<br>보고서 한 장으로.</h1>
+    <p class="sub">기업·제품 정보를 입력하면 AI가 전 세계 바이어와 서플라이어 후보를 탐색하고, 적합성 분석 보고서와 맞춤형 이메일 초안까지 자동으로 만들어 드립니다.</p>
+    <div class="ctas">
+      <a href="#contact" class="btn primary">서비스 문의하기</a>
+      <a href="#process" class="btn">작동 방식 보기</a>
+    </div>
+  </section>
+
+  <section id="service">
+    <div class="line"><span class="idx">01 — 개요</span><h2>국가·품목 제한 없는 거래 파트너 탐색</h2></div>
+    <div class="section-body">
+      <p style="max-width:64ch;color:var(--muted);font-size:15px">
+        특정 국가나 품목에 매이지 않고, 전 세계를 대상으로 판매처와 공급처를 동시에 탐색합니다.
+        고객 기업의 유형·제품 정보·거래 조건을 종합적으로 분석해, 지금 사업 방식에 맞는 파트너만 추립니다.
+      </p>
+      <div class="grid2" style="margin-top:28px">
+        <div class="card">
+          <div class="tag">바이어 발굴</div>
+          <h3>해외 판매처를 넓히려는 기업</h3>
+          <p>제조기업·브랜드기업·무역기업이 해외 수입기업·유통기업·산업 수요기업을 찾을 때.</p>
+        </div>
+        <div class="card">
+          <div class="tag">서플라이어 발굴</div>
+          <h3>해외 공급처를 확보하려는 기업</h3>
+          <p>원부자재·부품·완제품의 제조기업·OEM·ODM 공급처를 해외에서 찾을 때.</p>
+        </div>
+      </div>
+      <p style="margin-top:24px;font-size:14px;color:var(--mono)">
+        공통된 고민: 다국어로 흩어진 기업 정보를 모으고, 후보를 비교·선별하고, 첫 연락을 준비하는 데
+        시간과 인력이 소요됩니다. 같은 제품이라도 기업의 유형과 사업 방식에 따라 맞는 상대는 달라집니다.
+      </p>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="line"><span class="idx">02 — 흐름</span><h2>입력부터 이메일 초안까지, 다섯 단계</h2></div>
+    <div class="section-body">
+      <div class="process">
+        <div class="step">
+          <div class="num">01</div>
+          <div><div class="label">고객 정보 입력</div>
+            <div class="desc">기업 유형·사업 모델·제조 및 공급 역량, 판매·구매 제품, 사양·가격대·물량·인증, 희망 시장·거래 조건을 입력합니다.</div></div>
+        </div>
+        <div class="step">
+          <div class="num">02</div>
+          <div><div class="label">AI 글로벌 기업 탐색</div>
+            <div class="desc">바이어 발굴은 수입기업·유통기업·브랜드기업·산업 수요기업을, 서플라이어 발굴은 제조기업·부품 공급기업·OEM·ODM 기업을 탐색합니다.</div></div>
+        </div>
+        <div class="step">
+          <div class="num">03</div>
+          <div><div class="label">적합성 분석</div>
+            <div class="desc">취급 제품, 사업 역할, 거래 조건 부합도를 기준으로 후보를 비교·평가합니다.</div></div>
+        </div>
+        <div class="step">
+          <div class="num">04</div>
+          <div><div class="label">보고서 자동 생성</div>
+            <div class="desc">후보 기업 개요, 추천 근거, 접촉 정보와 우선순위를 담은 보고서를 자동으로 만듭니다.</div></div>
+        </div>
+        <div class="step">
+          <div class="num">05</div>
+          <div><div class="label">이메일 초안 작성</div>
+            <div class="desc">고객과 후보 기업의 특성을 반영한 판매 제안·구매 문의·견적 요청 초안을 다국어로 준비합니다.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="edge">
+    <div class="line"><span class="idx">03 — 차별성</span><h2>왜 PartnerFit인가</h2></div>
+    <div class="section-body">
+      <div class="grid4">
+        <div class="feat">
+          <div class="eyebrow">맞춤 매칭</div>
+          <h3>기업 사업 방식 × 제품 특성 × 거래 조건</h3>
+          <p>세 가지를 함께 반영해, 같은 제품이라도 기업마다 다른 적합한 상대를 찾습니다.</p>
+        </div>
+        <div class="feat">
+          <div class="eyebrow">목적별 분석</div>
+          <h3>바이어와 서플라이어, 다른 기준</h3>
+          <p>바이어는 취급 제품과 유통·조달 방식을, 서플라이어는 공급 역량·사양·물량·납기를 중심으로 평가합니다.</p>
+        </div>
+        <div class="feat">
+          <div class="eyebrow">판매·조달 통합</div>
+          <h3>하나의 기업 정보로 양방향 탐색</h3>
+          <p>동일한 기업·제품 정보를 활용해 바이어와 서플라이어를 동시에 탐색할 수 있습니다.</p>
+        </div>
+        <div class="feat">
+          <div class="eyebrow">AI 자동화</div>
+          <h3>탐색부터 이메일 초안까지 연속 처리</h3>
+          <p>다국어 정보 탐색, 후보 비교, 보고서, 이메일 초안 작성을 하나의 흐름으로 이어갑니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact">
+      <div class="eyebrow">문의</div>
+      <h2>지금 취급하는 제품으로, 어떤 파트너가 나오는지 먼저 확인해 보세요.</h2>
+      <div class="contact-row">
+        <div class="addr-box">
+          <span id="email-text">inkyulee806@gmail.com</span>
+          <button class="copybtn" id="copy-btn" type="button">복사</button>
+        </div>
+        <span class="note">초기 문의는 무료·저가 기본 발굴로 안내드립니다.</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 PartnerFit</span>
+    <span>AI 기반 글로벌 바이어 · 서플라이어 발굴 서비스</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var btn = document.getElementById('copy-btn');
+  var text = document.getElementById('email-text');
+  if(!btn) return;
+  btn.addEventListener('click', function(){
+    var value = text.textContent.trim();
+    function fallback(){
+      try{
+        var range = document.createRange();
+        range.selectNodeContents(text);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }catch(e){}
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(value).then(function(){
+        btn.textContent = '복사됨';
+        setTimeout(function(){ btn.textContent = '복사'; }, 1500);
+      }).catch(fallback);
+    } else {
+      fallback();
+    }
+  });
+})();
+</script>
