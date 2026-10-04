@@ -101,11 +101,6 @@ section:last-of-type{border-bottom:none}
 .contact{padding-block:48px;display:flex;flex-direction:column;gap:18px}
 .contact h2{font-size:26px;max-width:18ch}
 .contact-row{display:flex;gap:28px;flex-wrap:wrap;align-items:center;margin-top:8px}
-.addr-box{display:flex;align-items:center;gap:10px;background:var(--surface);
-  border:1px solid var(--border);border-radius:3px;padding:10px 14px;
-  font-family:var(--utility);font-size:14px}
-.copybtn{border:none;background:none;color:var(--accent);font-family:var(--utility);
-  font-size:12px;cursor:pointer;padding:4px}
 .note{font-size:13px;color:var(--mono)}
 
 footer{padding-block:28px;display:flex;justify-content:space-between;gap:12px;
@@ -231,10 +226,6 @@ footer{padding-block:28px;display:flex;justify-content:space-between;gap:12px;
       <div class="eyebrow">문의</div>
       <h2>지금 취급하는 제품으로, 어떤 파트너가 나오는지 먼저 확인해 보세요.</h2>
       <div class="contact-row">
-        <div class="addr-box">
-          <span id="email-text">inkyulee806@gmail.com</span>
-          <button class="copybtn" id="copy-btn" type="button">복사</button>
-        </div>
         <span class="note">초기 문의는 무료·저가 기본 발굴로 안내드립니다.</span>
       </div>
     </div>
@@ -246,30 +237,3 @@ footer{padding-block:28px;display:flex;justify-content:space-between;gap:12px;
   </footer>
 </div>
 
-<script>
-(function(){
-  var btn = document.getElementById('copy-btn');
-  var text = document.getElementById('email-text');
-  if(!btn) return;
-  btn.addEventListener('click', function(){
-    var value = text.textContent.trim();
-    function fallback(){
-      try{
-        var range = document.createRange();
-        range.selectNodeContents(text);
-        var sel = window.getSelection();
-        sel.removeAllRanges();
-        sel.addRange(range);
-      }catch(e){}
-    }
-    if(navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(value).then(function(){
-        btn.textContent = '복사됨';
-        setTimeout(function(){ btn.textContent = '복사'; }, 1500);
-      }).catch(fallback);
-    } else {
-      fallback();
-    }
-  });
-})();
-</script>
