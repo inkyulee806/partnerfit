@@ -50,6 +50,12 @@ nav{display:flex;gap:22px;font-size:14px;color:var(--muted)}
 nav a{text-decoration:none}
 nav a:hover{color:var(--fg)}
 
+/* ---- auth ---- */
+.auth{display:flex;align-items:center;gap:10px;font-size:13px}
+.auth[hidden]{display:none}
+.auth .who{color:var(--muted);max-width:14ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.auth .btn{padding:8px 14px;font-size:13px}
+
 /* ---- hero ---- */
 .hero{padding-block:64px 48px;border-bottom:1px solid var(--border)}
 .hero .eyebrow{margin-bottom:16px}
@@ -122,6 +128,10 @@ footer{padding-block:28px;display:flex;justify-content:space-between;gap:12px;
       <a href="#edge">차별성</a>
       <a href="#contact">문의</a>
     </nav>
+    <div class="auth" id="auth" hidden>
+      <span class="who" id="auth-who" hidden></span>
+      <button class="btn" id="auth-btn" type="button">Google 로그인</button>
+    </div>
   </header>
 
   <section class="hero">
@@ -236,4 +246,43 @@ footer{padding-block:28px;display:flex;justify-content:space-between;gap:12px;
     <span>AI 기반 글로벌 바이어 · 서플라이어 발굴 서비스</span>
   </footer>
 </div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { firebaseConfig } from "./firebase-config.js";
+
+// 설정값이 아직 비어 있으면 로그인 UI를 숨긴 채 둔다.
+if (!firebaseConfig.apiKey || firebaseConfig.apiKey.startsWith("YOUR_")) {
+  console.info("Firebase 설정 전: 로그인 버튼 숨김");
+} else {
+  const auth = getAuth(initializeApp(firebaseConfig));
+  const box = document.getElementById("auth");
+  const who = document.getElementById("auth-who");
+  const btn = document.getElementById("auth-btn");
+  box.hidden = false;
+
+  btn.addEventListener("click", async () => {
+    try {
+      if (auth.currentUser) await signOut(auth);
+      else await signInWithPopup(auth, new GoogleAuthProvider());
+    } catch (e) {
+      console.error(e);
+      if (e.code !== "auth/popup-closed-by-user") btn.textContent = "로그인 실패, 다시 시도";
+    }
+  });
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      who.textContent = user.displayName || "로그인됨";
+      who.hidden = false;
+      btn.textContent = "로그아웃";
+    } else {
+      who.hidden = true;
+      btn.textContent = "Google 로그인";
+    }
+  });
+}
+</script>
 
