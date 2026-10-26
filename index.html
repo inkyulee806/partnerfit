@@ -15,7 +15,12 @@
 <meta property="og:title" content="PartnerFit(파트너핏) | AI 해외 바이어·서플라이어 발굴">
 <meta property="og:description" content="기업·제품 정보를 입력하면 AI가 해외 바이어와 서플라이어 후보를 탐색하고, 적합성 분석 보고서와 맞춤형 이메일 초안을 자동으로 만들어 주는 서비스입니다.">
 <meta property="og:url" content="https://partnerfit-nine.vercel.app/">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://partnerfit-nine.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="PartnerFit(파트너핏) AI 해외 바이어·서플라이어 발굴">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://partnerfit-nine.vercel.app/og-image.png">
 <meta name="twitter:title" content="PartnerFit(파트너핏) | AI 해외 바이어·서플라이어 발굴">
 <meta name="twitter:description" content="기업·제품 정보를 입력하면 AI가 해외 바이어와 서플라이어 후보를 탐색하고, 적합성 분석 보고서와 맞춤형 이메일 초안을 자동으로 만들어 주는 서비스입니다.">
 <script type="application/ld+json">
@@ -45,12 +50,17 @@
       "name": "PartnerFit(파트너핏) | AI 해외 바이어·서플라이어 발굴",
       "inLanguage": "ko",
       "isPartOf": { "@id": "https://partnerfit-nine.vercel.app/#website" },
-      "dateModified": "2026-10-16"
+      "dateModified": "2026-10-26"
     },
     {
       "@type": "FAQPage",
       "@id": "https://partnerfit-nine.vercel.app/#faq",
       "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "PartnerFit은 무료인가요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "네. PartnerFit은 무료로 이용할 수 있습니다." }
+        },
         {
           "@type": "Question",
           "name": "PartnerFit은 무엇인가요?",
@@ -328,10 +338,27 @@ footer time{font-family:var(--utility)}
     </div>
   </section>
 
+  <section id="report">
+    <div class="line"><span class="idx">예시</span><h2>보고서는 이렇게 구성됩니다</h2></div>
+    <div class="section-body">
+      <p style="max-width:64ch;color:var(--muted);font-size:14px;margin-bottom:20px">아래는 보고서 항목 구성을 보여 주는 예시입니다. 실제 기업명과 수치는 포함하지 않으며, 결과는 입력하신 제품·시장 조건에 따라 달라집니다.</p>
+      <div class="grid2">
+        <div class="card"><div class="tag">예시 · 1</div><h3>후보 기업 개요</h3><p>기업명, 국가, 사업 역할, 취급 제품</p></div>
+        <div class="card"><div class="tag">예시 · 2</div><h3>거래 적합성</h3><p>입력한 제품·조건과의 적합 여부와 추천 근거</p></div>
+        <div class="card"><div class="tag">예시 · 3</div><h3>접촉 정보와 우선순위</h3><p>접촉 가능한 공개 정보와 접근 우선순위</p></div>
+        <div class="card"><div class="tag">예시 · 4</div><h3>이메일 초안</h3><p>판매 제안·구매 문의·견적 요청용 다국어 초안</p></div>
+      </div>
+    </div>
+  </section>
+
   <section id="faq">
     <div class="line"><span class="idx">04 — 질문</span><h2>자주 묻는 질문</h2></div>
     <div class="section-body">
       <div class="faq">
+        <div class="faq-item">
+          <h3>PartnerFit은 무료인가요?</h3>
+          <p>네. PartnerFit은 무료로 이용할 수 있습니다.</p>
+        </div>
         <div class="faq-item">
           <h3>PartnerFit은 무엇인가요?</h3>
           <p>PartnerFit(파트너핏)은 기업·제품 정보를 바탕으로 해외 바이어와 서플라이어 후보를 AI로 탐색해 추천하고, 분석 보고서와 맞춤형 이메일 초안까지 자동으로 만들어 주는 서비스입니다.</p>
@@ -361,7 +388,7 @@ footer time{font-family:var(--utility)}
       <div class="eyebrow">문의</div>
       <h2>지금 취급하는 제품으로, 어떤 파트너가 나오는지 먼저 확인해 보세요.</h2>
       <div class="contact-row">
-        <span class="note">초기 문의는 무료·저가 기본 발굴로 안내드립니다.</span>
+        <span class="note">PartnerFit은 무료로 이용할 수 있습니다.</span>
       </div>
     </div>
   </section>
@@ -369,7 +396,7 @@ footer time{font-family:var(--utility)}
 
   <footer>
     <span>© 2026 PartnerFit</span>
-    <span>최종 수정 <time datetime="2026-10-16">2026-10-16</time></span>
+    <span>최종 수정 <time datetime="2026-10-26">2026-10-26</time></span>
     <span>AI 기반 글로벌 바이어 · 서플라이어 발굴 서비스</span>
   </footer>
 </div>
