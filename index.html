@@ -103,23 +103,23 @@
 /* Layout concept: a customs-manifest page — numbered line items, a running
    index rail, and tabular rhythm rather than a marketing hero stack. */
 :root{
-  --bg:#f5f4f0; --fg:#1c2127; --muted:#5b6169; --surface:#ffffff;
-  --border:#ddd9cc; --accent:#8f5f24; --accent-fg:#ffffff;
-  --mono:#6b6054;
+  --bg:#f4f6fa; --fg:#1c2127; --muted:#566170; --surface:#ffffff;
+  --border:#d9dfea; --accent:#1e3a6e; --accent-fg:#ffffff;
+  --mono:#5a6577;
   --display:"Instrument Sans",system-ui,sans-serif;
   --body:"Instrument Sans",system-ui,sans-serif;
   --utility:"IBM Plex Mono",ui-monospace,monospace;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#11151c; --fg:#ebe8e0; --muted:#9a978d; --surface:#181d25;
-    --border:#2b313b; --accent:#d9a654; --accent-fg:#14100a; --mono:#8d8a7f;
+    --bg:#0f141c; --fg:#e8ecf3; --muted:#9aa6b8; --surface:#171d27;
+    --border:#2a3342; --accent:#8fb0ea; --accent-fg:#0b1426; --mono:#8d99ad;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#11151c; --fg:#ebe8e0; --muted:#9a978d; --surface:#181d25;
-  --border:#2b313b; --accent:#d9a654; --accent-fg:#14100a; --mono:#8d8a7f;
+  --bg:#0f141c; --fg:#e8ecf3; --muted:#9aa6b8; --surface:#171d27;
+  --border:#2a3342; --accent:#8fb0ea; --accent-fg:#0b1426; --mono:#8d99ad;
   color-scheme:dark;
 }
 
@@ -136,7 +136,7 @@ a{color:inherit}
 
 /* ---- header ---- */
 header{display:flex;align-items:center;justify-content:space-between;
-  padding-block:22px;border-bottom:1px solid var(--border);
+  padding-block:12px;border-bottom:1px solid var(--border);
   position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);
   z-index:10;gap:12px;flex-wrap:wrap}
 .logo{font-family:var(--display);font-weight:700;font-size:19px;
@@ -145,6 +145,12 @@ header{display:flex;align-items:center;justify-content:space-between;
   border-radius:1px}
 nav{display:flex;gap:16px;font-size:15px;color:var(--muted)}
 nav a{text-decoration:none;display:inline-block;padding:8px 2px}
+/* header: row 1 = logo + login, row 2 = menu + language */
+.logo{order:1}
+.auth{order:2;margin-left:auto}
+header::after{content:"";order:3;flex-basis:100%;height:0}
+header>nav:not(.lang){order:4}
+header>.lang{order:5;margin-left:auto}
 nav a:hover{color:var(--fg)}
 
 /* ---- auth ---- */
@@ -219,6 +225,7 @@ footer{padding-block:28px;display:flex;justify-content:space-between;gap:12px;
 @media (max-width:620px){
   .grid2,.grid4{grid-template-columns:1fr}
   nav{gap:12px;font-size:14px}
+  header>.lang,.auth{margin-left:0}
   .hero{padding-block:44px 32px}
 }
 
@@ -361,12 +368,6 @@ footer time{font-family:var(--utility)}
     <div class="section-body">
       <p style="max-width:64ch;color:var(--muted);font-size:14px;margin-bottom:20px">아래는 보고서 항목 구성을 보여 주는 예시입니다. 실제 기업명과 수치는 포함하지 않으며, 결과는 입력하신 제품·시장 조건에 따라 달라집니다.</p>
       <img src="report-example.png" width="1000" height="520" loading="lazy" style="max-width:100%;height:auto;border:1px solid var(--border);border-radius:4px;margin-bottom:20px" alt="PartnerFit 보고서 구성 예시: 후보 기업 개요, 거래 적합성, 접촉 정보와 우선순위, 이메일 초안의 4개 항목">
-      <div class="grid2">
-        <div class="card"><div class="tag">예시 · 1</div><h3>후보 기업 개요</h3><p>기업명, 국가, 사업 역할, 취급 제품</p></div>
-        <div class="card"><div class="tag">예시 · 2</div><h3>거래 적합성</h3><p>입력한 제품·조건과의 적합 여부와 추천 근거</p></div>
-        <div class="card"><div class="tag">예시 · 3</div><h3>접촉 정보와 우선순위</h3><p>접촉 가능한 공개 정보와 접근 우선순위</p></div>
-        <div class="card"><div class="tag">예시 · 4</div><h3>이메일 초안</h3><p>판매 제안·구매 문의·견적 요청용 다국어 초안</p></div>
-      </div>
     </div>
   </section>
 

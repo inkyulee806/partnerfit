@@ -103,23 +103,23 @@
 /* Layout concept: a customs-manifest page — numbered line items, a running
    index rail, and tabular rhythm rather than a marketing hero stack. */
 :root{
-  --bg:#f5f4f0; --fg:#1c2127; --muted:#5b6169; --surface:#ffffff;
-  --border:#ddd9cc; --accent:#8f5f24; --accent-fg:#ffffff;
-  --mono:#6b6054;
+  --bg:#f4f6fa; --fg:#1c2127; --muted:#566170; --surface:#ffffff;
+  --border:#d9dfea; --accent:#1e3a6e; --accent-fg:#ffffff;
+  --mono:#5a6577;
   --display:"Instrument Sans",system-ui,sans-serif;
   --body:"Instrument Sans",system-ui,sans-serif;
   --utility:"IBM Plex Mono",ui-monospace,monospace;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#11151c; --fg:#ebe8e0; --muted:#9a978d; --surface:#181d25;
-    --border:#2b313b; --accent:#d9a654; --accent-fg:#14100a; --mono:#8d8a7f;
+    --bg:#0f141c; --fg:#e8ecf3; --muted:#9aa6b8; --surface:#171d27;
+    --border:#2a3342; --accent:#8fb0ea; --accent-fg:#0b1426; --mono:#8d99ad;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#11151c; --fg:#ebe8e0; --muted:#9a978d; --surface:#181d25;
-  --border:#2b313b; --accent:#d9a654; --accent-fg:#14100a; --mono:#8d8a7f;
+  --bg:#0f141c; --fg:#e8ecf3; --muted:#9aa6b8; --surface:#171d27;
+  --border:#2a3342; --accent:#8fb0ea; --accent-fg:#0b1426; --mono:#8d99ad;
   color-scheme:dark;
 }
 
@@ -136,7 +136,7 @@ a{color:inherit}
 
 /* ---- header ---- */
 header{display:flex;align-items:center;justify-content:space-between;
-  padding-block:22px;border-bottom:1px solid var(--border);
+  padding-block:12px;border-bottom:1px solid var(--border);
   position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);
   z-index:10;gap:12px;flex-wrap:wrap}
 .logo{font-family:var(--display);font-weight:700;font-size:19px;
@@ -145,6 +145,12 @@ header{display:flex;align-items:center;justify-content:space-between;
   border-radius:1px}
 nav{display:flex;gap:16px;font-size:15px;color:var(--muted)}
 nav a{text-decoration:none;display:inline-block;padding:8px 2px}
+/* header: row 1 = logo + login, row 2 = menu + language */
+.logo{order:1}
+.auth{order:2;margin-left:auto}
+header::after{content:"";order:3;flex-basis:100%;height:0}
+header>nav:not(.lang){order:4}
+header>.lang{order:5;margin-left:auto}
 nav a:hover{color:var(--fg)}
 
 /* ---- auth ---- */
@@ -211,14 +217,15 @@ section:last-of-type{border-bottom:none}
 .contact{padding-block:48px;display:flex;flex-direction:column;gap:18px}
 .contact h2{font-size:26px;max-width:18ch}
 .contact-row{display:flex;gap:28px;flex-wrap:wrap;align-items:center;margin-top:8px}
-.note{font-size:13px;color:var(--mono)}
+.note{font-size:14px;color:var(--mono)}
 
 footer{padding-block:28px;display:flex;justify-content:space-between;gap:12px;
   flex-wrap:wrap;font-size:13px;color:var(--mono)}
 
 @media (max-width:620px){
   .grid2,.grid4{grid-template-columns:1fr}
-  nav{gap:14px;font-size:13px}
+  nav{gap:12px;font-size:14px}
+  header>.lang,.auth{margin-left:0}
   .hero{padding-block:44px 32px}
 }
 
@@ -272,7 +279,7 @@ footer time{font-family:var(--utility)}
         不限定特定国家或品类，在全球范围内同时搜寻销售渠道和供货渠道。
         综合分析客户企业的类型、产品信息和交易条件，只筛选出适合当前业务方式的合作伙伴。
       </p>
-      <p style="max-width:64ch;color:var(--muted);font-size:13px;margin-top:12px">
+      <p style="max-width:64ch;color:var(--muted);font-size:14px;margin-top:12px">
         参考（依据与来源）：作为公共机构收费的海外买家开发代办案例，KOTRA 出口24（Export24）对潜在买家开发的收费标准为每家企业 15 万韩元（不含增值税）。相比之下，PartnerFit 不收取服务费（AI 使用费用计入您自己的 API 账户）。
         来源：<a href="https://www.kotra.or.kr/upload/2024/11/05/BM202411050000045376_0.pdf" rel="noopener" style="color:var(--accent)">KOTRA 出口24 全球代办（海外市场调查）服务介绍（2024 年 11 月条款适用版）</a>
       </p>
@@ -361,12 +368,6 @@ footer time{font-family:var(--utility)}
     <div class="section-body">
       <p style="max-width:64ch;color:var(--muted);font-size:14px;margin-bottom:20px">以下示例展示报告的项目构成。不包含真实的企业名称和数据，结果会因您输入的产品和市场条件而不同。</p>
       <img src="../report-example-zh.png" width="1000" height="520" loading="lazy" style="max-width:100%;height:auto;border:1px solid var(--border);border-radius:4px;margin-bottom:20px" alt="PartnerFit 报告构成示例：候选企业概况、交易匹配度、联系信息与优先顺序、邮件草稿共 4 项">
-      <div class="grid2">
-        <div class="card"><div class="tag">示例 · 1</div><h3>候选企业概况</h3><p>企业名称、国家、业务角色、经营产品</p></div>
-        <div class="card"><div class="tag">示例 · 2</div><h3>交易匹配度</h3><p>与所输入产品和条件的匹配情况及推荐依据</p></div>
-        <div class="card"><div class="tag">示例 · 3</div><h3>联系信息与优先顺序</h3><p>可联系的公开信息及接洽优先顺序</p></div>
-        <div class="card"><div class="tag">示例 · 4</div><h3>邮件草稿</h3><p>用于销售提案、采购咨询和报价请求的多语言草稿</p></div>
-      </div>
     </div>
   </section>
 

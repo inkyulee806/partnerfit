@@ -103,23 +103,23 @@
 /* Layout concept: a customs-manifest page — numbered line items, a running
    index rail, and tabular rhythm rather than a marketing hero stack. */
 :root{
-  --bg:#f5f4f0; --fg:#1c2127; --muted:#5b6169; --surface:#ffffff;
-  --border:#ddd9cc; --accent:#8f5f24; --accent-fg:#ffffff;
-  --mono:#6b6054;
+  --bg:#f4f6fa; --fg:#1c2127; --muted:#566170; --surface:#ffffff;
+  --border:#d9dfea; --accent:#1e3a6e; --accent-fg:#ffffff;
+  --mono:#5a6577;
   --display:"Instrument Sans",system-ui,sans-serif;
   --body:"Instrument Sans",system-ui,sans-serif;
   --utility:"IBM Plex Mono",ui-monospace,monospace;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#11151c; --fg:#ebe8e0; --muted:#9a978d; --surface:#181d25;
-    --border:#2b313b; --accent:#d9a654; --accent-fg:#14100a; --mono:#8d8a7f;
+    --bg:#0f141c; --fg:#e8ecf3; --muted:#9aa6b8; --surface:#171d27;
+    --border:#2a3342; --accent:#8fb0ea; --accent-fg:#0b1426; --mono:#8d99ad;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#11151c; --fg:#ebe8e0; --muted:#9a978d; --surface:#181d25;
-  --border:#2b313b; --accent:#d9a654; --accent-fg:#14100a; --mono:#8d8a7f;
+  --bg:#0f141c; --fg:#e8ecf3; --muted:#9aa6b8; --surface:#171d27;
+  --border:#2a3342; --accent:#8fb0ea; --accent-fg:#0b1426; --mono:#8d99ad;
   color-scheme:dark;
 }
 
@@ -136,7 +136,7 @@ a{color:inherit}
 
 /* ---- header ---- */
 header{display:flex;align-items:center;justify-content:space-between;
-  padding-block:22px;border-bottom:1px solid var(--border);
+  padding-block:12px;border-bottom:1px solid var(--border);
   position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);
   z-index:10;gap:12px;flex-wrap:wrap}
 .logo{font-family:var(--display);font-weight:700;font-size:19px;
@@ -145,6 +145,12 @@ header{display:flex;align-items:center;justify-content:space-between;
   border-radius:1px}
 nav{display:flex;gap:16px;font-size:15px;color:var(--muted)}
 nav a{text-decoration:none;display:inline-block;padding:8px 2px}
+/* header: row 1 = logo + login, row 2 = menu + language */
+.logo{order:1}
+.auth{order:2;margin-left:auto}
+header::after{content:"";order:3;flex-basis:100%;height:0}
+header>nav:not(.lang){order:4}
+header>.lang{order:5;margin-left:auto}
 nav a:hover{color:var(--fg)}
 
 /* ---- auth ---- */
@@ -211,14 +217,15 @@ section:last-of-type{border-bottom:none}
 .contact{padding-block:48px;display:flex;flex-direction:column;gap:18px}
 .contact h2{font-size:26px;max-width:18ch}
 .contact-row{display:flex;gap:28px;flex-wrap:wrap;align-items:center;margin-top:8px}
-.note{font-size:13px;color:var(--mono)}
+.note{font-size:14px;color:var(--mono)}
 
 footer{padding-block:28px;display:flex;justify-content:space-between;gap:12px;
   flex-wrap:wrap;font-size:13px;color:var(--mono)}
 
 @media (max-width:620px){
   .grid2,.grid4{grid-template-columns:1fr}
-  nav{gap:14px;font-size:13px}
+  nav{gap:12px;font-size:14px}
+  header>.lang,.auth{margin-left:0}
   .hero{padding-block:44px 32px}
 }
 
@@ -272,7 +279,7 @@ footer time{font-family:var(--utility)}
         特定の国や品目にとらわれず、世界中を対象に販売先と供給先を同時に探索します。
         顧客企業のタイプ・製品情報・取引条件を総合的に分析し、現在の事業方式に合うパートナーだけを絞り込みます。
       </p>
-      <p style="max-width:64ch;color:var(--muted);font-size:13px;margin-top:12px">
+      <p style="max-width:64ch;color:var(--muted);font-size:14px;margin-top:12px">
         参考（根拠・出典）：公的機関による有料の海外バイヤー発掘代行の例として、KOTRAの「輸出24（Export24）」は潜在バイヤーの発掘を1社あたり15万ウォン（VAT別）としています。一方、PartnerFitのサービス利用料は無料です（AIの利用料はお客様ご自身のAPIアカウントに請求されます）。
         出典：<a href="https://www.kotra.or.kr/upload/2024/11/05/BM202411050000045376_0.pdf" rel="noopener" style="color:var(--accent)">KOTRA 輸出24 グローバル代行（海外市場調査）サービス案内（2024年11月約款適用基準）</a>
       </p>
@@ -361,12 +368,6 @@ footer time{font-family:var(--utility)}
     <div class="section-body">
       <p style="max-width:64ch;color:var(--muted);font-size:14px;margin-bottom:20px">以下はレポートの項目構成を示す例です。実際の企業名や数値は含まれておらず、結果は入力された製品・市場条件によって異なります。</p>
       <img src="../report-example-ja.png" width="1000" height="520" loading="lazy" style="max-width:100%;height:auto;border:1px solid var(--border);border-radius:4px;margin-bottom:20px" alt="PartnerFitレポート構成例：候補企業の概要、取引適合性、連絡先情報と優先順位、メール文案の4項目">
-      <div class="grid2">
-        <div class="card"><div class="tag">例 · 1</div><h3>候補企業の概要</h3><p>企業名、国、事業上の役割、取扱製品</p></div>
-        <div class="card"><div class="tag">例 · 2</div><h3>取引適合性</h3><p>入力した製品・条件との適合の有無と推薦根拠</p></div>
-        <div class="card"><div class="tag">例 · 3</div><h3>連絡先情報と優先順位</h3><p>連絡可能な公開情報とアプローチの優先順位</p></div>
-        <div class="card"><div class="tag">例 · 4</div><h3>メール文案</h3><p>販売提案・購入問い合わせ・見積依頼用の多言語文案</p></div>
-      </div>
     </div>
   </section>
 
