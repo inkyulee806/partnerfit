@@ -55,7 +55,7 @@
       "name": "PartnerFit(파트너핏) | AI 해외 바이어·서플라이어 발굴",
       "inLanguage": "ko",
       "isPartOf": { "@id": "https://partnerfit-nine.vercel.app/#website" },
-      "dateModified": "2026-10-26"
+      "dateModified": "2026-10-27"
     },
     {
       "@type": "FAQPage",
@@ -104,7 +104,7 @@
    index rail, and tabular rhythm rather than a marketing hero stack. */
 :root{
   --bg:#f5f4f0; --fg:#1c2127; --muted:#5b6169; --surface:#ffffff;
-  --border:#ddd9cc; --accent:#9c6a2c; --accent-fg:#ffffff;
+  --border:#ddd9cc; --accent:#8f5f24; --accent-fg:#ffffff;
   --mono:#6b6054;
   --display:"Instrument Sans",system-ui,sans-serif;
   --body:"Instrument Sans",system-ui,sans-serif;
@@ -131,7 +131,7 @@ h1,h2,h3{font-family:var(--display);font-weight:650;letter-spacing:-0.01em;
 p{margin:0}
 a{color:inherit}
 .wrap{max-width:920px;margin:0 auto}
-.eyebrow{font-family:var(--utility);font-size:12px;letter-spacing:.08em;
+.eyebrow{font-family:var(--utility);font-size:13px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--mono)}
 
 /* ---- header ---- */
@@ -143,19 +143,22 @@ header{display:flex;align-items:center;justify-content:space-between;
   display:flex;align-items:baseline;gap:8px}
 .logo .mark{display:inline-block;width:9px;height:9px;background:var(--accent);
   border-radius:1px}
-nav{display:flex;gap:22px;font-size:14px;color:var(--muted)}
-nav a{text-decoration:none}
+nav{display:flex;gap:16px;font-size:15px;color:var(--muted)}
+nav a{text-decoration:none;display:inline-block;padding:8px 2px}
 nav a:hover{color:var(--fg)}
 
 /* ---- auth ---- */
 :lang(ja) h1,:lang(ja) h2,:lang(ja) h3{word-break:auto-phrase}
-.lang{display:flex;gap:10px;font-size:12px;color:var(--muted)}
-.lang a{text-decoration:none}
+/* Korean: break at spaces, not between syllables */
+:lang(ko) body{word-break:keep-all}
+body{overflow-wrap:break-word}
+.lang{display:flex;gap:6px;font-size:14px;color:var(--muted)}
+.lang a{text-decoration:none;display:inline-block;padding:8px 6px}
 .lang a[aria-current]{color:var(--fg);font-weight:600}
-.auth{display:flex;align-items:center;gap:10px;font-size:13px}
+.auth{display:flex;align-items:center;gap:10px;font-size:14px}
 .auth[hidden]{display:none}
 .auth .who{color:var(--muted);max-width:14ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.auth .btn{padding:8px 14px;font-size:13px}
+.auth .btn{padding:10px 14px;font-size:14px}
 
 /* ---- hero ---- */
 .hero{padding-block:64px 48px;border-bottom:1px solid var(--border)}
@@ -183,7 +186,7 @@ section:last-of-type{border-bottom:none}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:4px;
   padding:22px;min-width:0}
-.card .tag{font-family:var(--utility);font-size:11px;color:var(--accent);
+.card .tag{font-family:var(--utility);font-size:12px;color:var(--accent);
   text-transform:uppercase;letter-spacing:.06em}
 .card h3{font-size:17px;margin-top:8px}
 .card p{margin-top:10px;font-size:14px;color:var(--muted)}
@@ -208,14 +211,14 @@ section:last-of-type{border-bottom:none}
 .contact{padding-block:48px;display:flex;flex-direction:column;gap:18px}
 .contact h2{font-size:26px;max-width:18ch}
 .contact-row{display:flex;gap:28px;flex-wrap:wrap;align-items:center;margin-top:8px}
-.note{font-size:13px;color:var(--mono)}
+.note{font-size:14px;color:var(--mono)}
 
 footer{padding-block:28px;display:flex;justify-content:space-between;gap:12px;
   flex-wrap:wrap;font-size:13px;color:var(--mono)}
 
 @media (max-width:620px){
   .grid2,.grid4{grid-template-columns:1fr}
-  nav{gap:14px;font-size:13px}
+  nav{gap:12px;font-size:14px}
   .hero{padding-block:44px 32px}
 }
 
@@ -269,7 +272,7 @@ footer time{font-family:var(--utility)}
         특정 국가나 품목에 매이지 않고, 전 세계를 대상으로 판매처와 공급처를 동시에 탐색합니다.
         고객 기업의 유형·제품 정보·거래 조건을 종합적으로 분석해, 지금 사업 방식에 맞는 파트너만 추립니다.
       </p>
-      <p style="max-width:64ch;color:var(--muted);font-size:13px;margin-top:12px">
+      <p style="max-width:64ch;color:var(--muted);font-size:14px;margin-top:12px">
         참고(근거·출처): 공공기관의 유료 해외 바이어 발굴 대행 사례로, KOTRA 수출24는 잠재 바이어 발굴을 1개사당 15만원(VAT 별도)으로 안내합니다. 반면 PartnerFit 이용료는 무료입니다(AI 사용 비용은 고객 본인의 API 계정에 청구).
         출처: <a href="https://www.kotra.or.kr/upload/2024/11/05/BM202411050000045376_0.pdf" rel="noopener" style="color:var(--accent)">KOTRA 수출24 글로벌 대행(해외시장조사) 서비스 안내(2024-11 약관 적용 기준)</a>
       </p>
@@ -413,7 +416,7 @@ footer time{font-family:var(--utility)}
 
   <footer>
     <span>© 2026 PartnerFit</span>
-    <span>최종 수정 <time datetime="2026-10-26">2026-10-26</time></span>
+    <span>최종 수정 <time datetime="2026-10-27">2026-10-27</time></span>
     <span>AI 기반 글로벌 바이어 · 서플라이어 발굴 서비스</span>
   </footer>
 </div>
