@@ -66,9 +66,12 @@ pre{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);borde
   <section class="card">
     <h2 id="t-keyh"></h2>
     <div class="warn" id="t-cost"></div>
+    <label for="provider" id="l-provider"></label>
+    <select id="provider"><option value="openai">OpenAI</option><option value="anthropic">Anthropic (Claude)</option></select>
     <label for="apikey" id="l-apikey"></label>
     <input id="apikey" type="password" autocomplete="off" spellcheck="false" placeholder="sk-...">
     <p><button id="verify"></button> <span id="keystatus" role="status"></span></p>
+    <p class="note" id="t-keyhelp"></p>
     <label for="model" id="l-model"></label>
     <select id="model" disabled></select>
   </section>
@@ -132,8 +135,8 @@ import { firebaseConfig } from "../firebase-config.js";
 const UI = {
 ko:{title:"파트너 발굴 (베타)",sub:"기업·제품 정보를 입력하면 AI가 공개 웹 정보로 바이어/서플라이어 후보와 근거 출처를 정리합니다.",
 needlogin:"로그인 후 이용할 수 있습니다.",logout:"로그아웃",
-keyh:"1. 내 OpenAI API 키",cost:"이 서비스는 고객 본인의 OpenAI API 키로 AI를 실행합니다. 토큰·웹검색 비용은 본인의 OpenAI 계정에 청구되며(ChatGPT 구독료와 별개), 금액은 모델과 검색 횟수에 따라 달라집니다(OpenAI 요금 페이지에서 확인 필요). 키는 이 브라우저에서 OpenAI로 직접 전송되며 PartnerFit 서버에 저장하지 않습니다. 새로고침하면 사라집니다.",
-apikey:"OpenAI API 키",verify:"키 확인",model:"모델 (내 계정에서 사용 가능한 목록)",
+keyh:"1. AI 공급자와 내 API 키",provider:"AI 공급자",cost:"이 서비스는 고객 본인의 API 키로 AI를 실행합니다. 토큰·웹검색 비용은 본인의 공급자 계정에 청구되며(ChatGPT·Claude 구독료와 별개), 금액은 모델과 검색 횟수에 따라 달라집니다. 키는 이 브라우저에서 공급자로 직접 전송되며 PartnerFit 서버에 저장하지 않습니다. 새로고침하면 사라집니다.",costOpenai:"OpenAI 웹검색 비용은 요금 페이지에서 확인 필요.",costAnthropic:"Anthropic 웹검색은 1,000회당 10달러(공식 문서 기준)와 토큰 비용이 듭니다. 이 서비스는 1회 실행당 검색을 최대 25회로 제한합니다.",keyhelp:"키는 각 공급자 콘솔(OpenAI Platform, Anthropic Console)에서 발급합니다. 구독(ChatGPT·Claude)과 API는 별도 결제입니다.",
+apikey:"API 키",verify:"키 확인",model:"모델 (내 계정에서 사용 가능한 목록)",
 keyok:"확인됨. 사용 가능한 모델을 불러왔습니다.",keybad:"확인 실패: ",keyempty:"키를 입력하세요.",
 formh:"2. 파트너 조건",ptype:"찾는 파트너",buyer:"바이어 (수입·유통)",supplier:"서플라이어 (제조·OEM)",count:"후보 수 (1~10)",rlang:"보고서 언어",
 countries:"대상 국가 (쉼표로 구분)",tproducts:"대상 품목·업종 (쉼표로 구분)",scale:"선호 규모 (선택)",reqcert:"요구 인증 (선택, 쉼표)",
@@ -148,8 +151,8 @@ badjson:"AI 응답을 보고서 형식으로 읽지 못했습니다. 원문을 �
 print:"PDF로 저장 (인쇄 창에서 'PDF로 저장' 선택)"},
 en:{title:"Partner discovery (beta)",sub:"Enter your company and product details. The AI compiles buyer/supplier candidates with sources from public web information.",
 needlogin:"Please sign in to use this page.",logout:"Sign out",
-keyh:"1. Your OpenAI API key",cost:"This service runs the AI with your own OpenAI API key. Token and web-search costs are billed to your OpenAI account (separate from any ChatGPT subscription) and vary by model and number of searches (check OpenAI's pricing page; amount not verified). Your key is sent from this browser directly to OpenAI and is not stored on PartnerFit servers. It is cleared when you reload.",
-apikey:"OpenAI API key",verify:"Verify key",model:"Model (available to your account)",
+keyh:"1. AI provider and your API key",provider:"AI provider",cost:"This service runs the AI with your own API key. Token and web-search costs are billed to your provider account (separate from any ChatGPT/Claude subscription) and vary by model and number of searches. Your key is sent from this browser directly to the provider and is not stored on PartnerFit servers. It is cleared when you reload.",costOpenai:"OpenAI web-search cost: check OpenAI's pricing page (not verified).",costAnthropic:"Anthropic web search costs $10 per 1,000 searches (per official docs) plus token costs. This service limits each run to at most 25 searches.",keyhelp:"Create keys in each provider's console (OpenAI Platform, Anthropic Console). Subscriptions (ChatGPT/Claude) and API are billed separately.",
+apikey:"API key",verify:"Verify key",model:"Model (available to your account)",
 keyok:"Verified. Available models loaded.",keybad:"Verification failed: ",keyempty:"Enter a key.",
 formh:"2. Partner criteria",ptype:"Partner type",buyer:"Buyer (import/distribution)",supplier:"Supplier (manufacturer/OEM)",count:"Number of candidates (1-10)",rlang:"Report language",
 countries:"Target countries (comma-separated)",tproducts:"Target products/industries (comma-separated)",scale:"Preferred scale (optional)",reqcert:"Required certifications (optional, comma)",
@@ -180,19 +183,22 @@ JSON shape: {"language":"ko|en|zh|ja","summary":{"conditions":"","search_scope":
 /* ---------- helpers ---------- */
 const $ = id => document.getElementById(id);
 let lang = (()=>{try{const s=localStorage.getItem("pf_uilang"); if(s==="ko"||s==="en") return s;}catch{} return (navigator.language||"").startsWith("ko")?"ko":"en";})();
-let state = {key:"", currentId:null, timer:null, stop:false};
+let state = {key:"", provider:"openai", currentId:null, abort:null, stop:false};
 const t = k => UI[lang][k];
 const isHttp = u => { try { const p = new URL(u); return p.protocol==="https:"||p.protocol==="http:"; } catch { return false; } };
 const list = s => (s||"").split(",").map(x=>x.trim()).filter(Boolean);
 
 function applyUi(){
   document.documentElement.lang = lang;
-  const m = {"t-title":"title","t-sub":"sub","t-needlogin":"needlogin","logout":"logout","t-keyh":"keyh","t-cost":"cost","l-apikey":"apikey","verify":"verify","l-model":"model","t-formh":"formh","l-ptype":"ptype","l-count":"count","l-rlang":"rlang","l-countries":"countries","l-tproducts":"tproducts","l-scale":"scale","l-reqcert":"reqcert","t-myco":"myco","l-cname":"cname","l-ctype":"ctype","l-cmodel":"cmodel","l-ccap":"ccap","l-ccerts":"ccerts","t-myprod":"myprod","l-pitem":"pitem","l-pspecs":"pspecs","l-pprice":"pprice","l-pmoq":"pmoq","l-pcap":"pcap","l-plead":"plead","t-etc":"etc","l-xc":"xc","l-xco":"xco","l-terms":"terms","l-notes":"notes","t-saved":"saved","run":"run","cancel":"cancel"};
+  const m = {"t-title":"title","t-sub":"sub","t-needlogin":"needlogin","logout":"logout","t-keyh":"keyh","l-provider":"provider","t-keyhelp":"keyhelp","l-apikey":"apikey","verify":"verify","l-model":"model","t-formh":"formh","l-ptype":"ptype","l-count":"count","l-rlang":"rlang","l-countries":"countries","l-tproducts":"tproducts","l-scale":"scale","l-reqcert":"reqcert","t-myco":"myco","l-cname":"cname","l-ctype":"ctype","l-cmodel":"cmodel","l-ccap":"ccap","l-ccerts":"ccerts","t-myprod":"myprod","l-pitem":"pitem","l-pspecs":"pspecs","l-pprice":"pprice","l-pmoq":"pmoq","l-pcap":"pcap","l-plead":"plead","t-etc":"etc","l-xc":"xc","l-xco":"xco","l-terms":"terms","l-notes":"notes","t-saved":"saved","run":"run","cancel":"cancel"};
   for (const [id,k] of Object.entries(m)) $(id).textContent = t(k);
   $("f-ptype").options[0].text = t("buyer"); $("f-ptype").options[1].text = t("supplier");
   document.title = "PartnerFit — " + t("title");
+  setCost();
   $("uilang").value = lang;
 }
+function setCost(){ const p=$("provider").value; $("t-cost").textContent=t("cost")+" "+t(p==="openai"?"costOpenai":"costAnthropic"); }
+$("provider").addEventListener("change",()=>{ state.key=""; $("model").innerHTML=""; $("model").disabled=true; $("keystatus").textContent=""; setCost(); });
 $("uilang").addEventListener("change", e => { lang = e.target.value; try{localStorage.setItem("pf_uilang",lang)}catch{} applyUi(); });
 
 /* ---------- local profile (no API key) ---------- */
@@ -201,21 +207,29 @@ function saveForm(){ try{ const o={}; FIELDS.forEach(f=>o[f]=$(f).value); localS
 function loadForm(){ try{ const o=JSON.parse(localStorage.getItem("pf_form")||"{}"); FIELDS.forEach(f=>{ if(o[f]!==undefined) $(f).value=o[f]; }); }catch{} }
 FIELDS.forEach(f=>$(f).addEventListener("input",saveForm));
 
-/* ---------- OpenAI key / models ---------- */
+/* ---------- provider key / models ---------- */
+const ANTH_HDR=key=>({"x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true","content-type":"application/json"});
 $("verify").addEventListener("click", async ()=>{
-  const key=$("apikey").value.trim(); const st=$("keystatus");
+  const key=$("apikey").value.trim(); const st=$("keystatus"); const prov=$("provider").value;
   if(!key){ st.className="bad"; st.textContent=t("keyempty"); return; }
   st.className="note"; st.textContent="…";
   try{
-    const r = await fetch("https://api.openai.com/v1/models",{headers:{Authorization:"Bearer "+key}});
+    const r = prov==="openai"
+      ? await fetch("https://api.openai.com/v1/models",{headers:{Authorization:"Bearer "+key}})
+      : await fetch("https://api.anthropic.com/v1/models?limit=100",{headers:ANTH_HDR(key)});
     const j = await r.json().catch(()=>({}));
     if(!r.ok) throw new Error((j.error&&j.error.message)||("HTTP "+r.status));
-    const ids = (j.data||[]).map(x=>x.id).filter(id=>/^(gpt|o\d)/.test(id)&&!/(audio|realtime|image|tts|transcribe|embedding|moderation|search-preview|instruct)/.test(id)).sort();
+    let ids=(j.data||[]).map(x=>x.id);
+    ids = prov==="openai"
+      ? ids.filter(id=>/^(gpt|o\d)/.test(id)&&!/(audio|realtime|image|tts|transcribe|embedding|moderation|search-preview|instruct)/.test(id))
+      : ids.filter(id=>/^claude-/.test(id));
+    ids.sort();
     if(!ids.length) throw new Error("no usable model");
     const sel=$("model"); sel.innerHTML="";
     ids.forEach(id=>{ const o=document.createElement("option"); o.value=id; o.textContent=id; sel.appendChild(o); });
-    const pref=["gpt-5","gpt-4.1","gpt-4o"].find(p=>ids.includes(p)); if(pref) sel.value=pref;
-    sel.disabled=false; state.key=key; $("apikey").value=""; 
+    const prefs=prov==="openai"?["gpt-5","gpt-4.1","gpt-4o"]:["claude-sonnet-5-5","claude-opus-5-5"];
+    const pref=prefs.find(x=>ids.includes(x)); if(pref) sel.value=pref;
+    sel.disabled=false; state.key=key; state.provider=prov; $("apikey").value="";
     st.className="ok"; st.textContent=t("keyok");
   }catch(e){ state.key=""; st.className="bad"; st.textContent=t("keybad")+(e.message||e); }
 });
@@ -238,40 +252,72 @@ function buildInput(){
 const hdr=()=>({Authorization:"Bearer "+state.key,"Content-Type":"application/json"});
 const setStatus=(txt,cls)=>{ const s=$("runstatus"); s.className=cls||"note"; s.textContent=txt; };
 
+async function runOpenAI(inp,t0){
+  const body={model:$("model").value,background:true,store:true,
+    instructions:SYSTEM_PROMPT.replace("{partner_type}",inp.partner_type),
+    input:"Input JSON:\n"+JSON.stringify(inp),tools:[{type:"web_search"}]};
+  let r=await fetch("https://api.openai.com/v1/responses",{method:"POST",headers:hdr(),body:JSON.stringify(body)});
+  let j=await r.json().catch(()=>({}));
+  if(!r.ok) throw new Error((j.error&&j.error.message)||("HTTP "+r.status));
+  state.currentId=j.id;
+  while(!state.stop && (j.status==="queued"||j.status==="in_progress")){
+    setStatus(t("running")+Math.round((Date.now()-t0)/1000)+"s)");
+    await new Promise(res=>setTimeout(res,5000));
+    if(state.stop) break;
+    r=await fetch("https://api.openai.com/v1/responses/"+state.currentId,{headers:hdr()});
+    j=await r.json().catch(()=>({}));
+    if(!r.ok) throw new Error((j.error&&j.error.message)||("HTTP "+r.status));
+  }
+  if(state.stop) return null;
+  if(j.status!=="completed") throw new Error((j.error&&j.error.message)||j.status||"unknown");
+  const urls=new Set();
+  const parts=(j.output||[]).filter(o=>o.type==="message").flatMap(o=>o.content||[]).filter(c=>c.type==="output_text");
+  parts.forEach(c=>(c.annotations||[]).forEach(a=>{ if(a.url) urls.add(a.url); }));
+  return {text:parts.map(c=>c.text).join("\n"),urls};
+}
+async function runAnthropic(inp,t0){
+  const sys=SYSTEM_PROMPT.replace("{partner_type}",inp.partner_type);
+  const messages=[{role:"user",content:"Input JSON:\n"+JSON.stringify(inp)}];
+  const urls=new Set(); let lastText="";
+  state.abort=new AbortController();
+  const tick=setInterval(()=>setStatus(t("running")+Math.round((Date.now()-t0)/1000)+"s)"),1000);
+  try{
+    for(let turn=0;turn<6;turn++){
+      const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:ANTH_HDR(state.key),signal:state.abort.signal,
+        body:JSON.stringify({model:$("model").value,max_tokens:16000,system:sys,messages,tools:[{type:"web_search_20250305",name:"web_search",max_uses:25}]})});
+      const j=await r.json().catch(()=>({}));
+      if(!r.ok) throw new Error((j.error&&j.error.message)||("HTTP "+r.status));
+      const blocks=j.content||[];
+      for(const bk of blocks){
+        if(bk.type==="web_search_tool_result"&&Array.isArray(bk.content)) bk.content.forEach(x=>{ if(x.url) urls.add(x.url); });
+        if(bk.type==="text"){ (bk.citations||[]).forEach(c=>{ if(c.url) urls.add(c.url); }); if(bk.text.includes("{")&&bk.text.includes("}")) lastText=bk.text; }
+      }
+      if(j.stop_reason==="pause_turn"){ messages.push({role:"assistant",content:blocks}); continue; }
+      if(j.stop_reason==="max_tokens" && !lastText) throw new Error("max_tokens");
+      return {text:lastText||blocks.filter(b=>b.type==="text").map(b=>b.text).join("\n"),urls};
+    }
+    throw new Error("too many pause_turn");
+  }catch(e){ if(state.stop) return null; throw e; }
+  finally{ clearInterval(tick); }
+}
 $("run").addEventListener("click", async ()=>{
   if(!state.key){ setStatus(t("needkey"),"bad"); return; }
   const inp=buildInput();
   if(!inp.target_countries.length||!inp.target_products.length||!inp.customer_company.name||!inp.customer_company.business_model||!inp.customer_product.item){ setStatus(t("needfields"),"bad"); return; }
-  saveForm(); $("report").hidden=true; $("run").disabled=true; $("cancel").hidden=false; state.stop=false; setStatus(t("starting"));
+  saveForm(); $("report").hidden=true; $("run").disabled=true; $("cancel").hidden=false; state.stop=false; state.currentId=null; setStatus(t("starting"));
   const t0=Date.now();
   try{
-    const body={model:$("model").value,background:true,store:true,
-      instructions:SYSTEM_PROMPT.replace("{partner_type}",inp.partner_type),
-      input:"Input JSON:\n"+JSON.stringify(inp),
-      tools:[{type:"web_search"}]};
-    let r=await fetch("https://api.openai.com/v1/responses",{method:"POST",headers:hdr(),body:JSON.stringify(body)});
-    let j=await r.json().catch(()=>({}));
-    if(!r.ok) throw new Error((j.error&&j.error.message)||("HTTP "+r.status));
-    state.currentId=j.id;
-    while(!state.stop && (j.status==="queued"||j.status==="in_progress")){
-      setStatus(t("running")+Math.round((Date.now()-t0)/1000)+"s)");
-      await new Promise(res=>setTimeout(res,5000));
-      if(state.stop) break;
-      r=await fetch("https://api.openai.com/v1/responses/"+state.currentId,{headers:hdr()});
-      j=await r.json().catch(()=>({}));
-      if(!r.ok) throw new Error((j.error&&j.error.message)||("HTTP "+r.status));
-    }
-    if(state.stop){ setStatus(t("cancelled")); return; }
-    if(j.status!=="completed") throw new Error((j.error&&j.error.message)||j.status||"unknown");
+    const res = state.provider==="anthropic" ? await runAnthropic(inp,t0) : await runOpenAI(inp,t0);
+    if(!res){ setStatus(t("cancelled")); return; }
     setStatus(t("done"),"ok");
-    const text=(j.output||[]).filter(o=>o.type==="message").flatMap(o=>o.content||[]).filter(c=>c.type==="output_text").map(c=>c.text).join("\n");
-    renderReport(text,inp);
+    renderReport(res.text,inp,res.urls);
   }catch(e){ setStatus(t("failed")+(e.message||e),"bad"); }
   finally{ $("run").disabled=false; $("cancel").hidden=true; }
 });
 $("cancel").addEventListener("click", async ()=>{
   state.stop=true;
-  if(state.currentId){ try{ await fetch("https://api.openai.com/v1/responses/"+state.currentId+"/cancel",{method:"POST",headers:hdr()}); }catch{} }
+  if(state.abort){ try{ state.abort.abort(); }catch{} }
+  if(state.provider!=="anthropic" && state.currentId){ try{ await fetch("https://api.openai.com/v1/responses/"+state.currentId+"/cancel",{method:"POST",headers:hdr()}); }catch{} }
 });
 
 /* ---------- validate + render ---------- */
@@ -279,20 +325,22 @@ function parseJson(text){ const a=text.indexOf("{"), b=text.lastIndexOf("}"); if
 function el(tag,txt,cls){ const e=document.createElement(tag); if(txt!==undefined) e.textContent=txt; if(cls) e.className=cls; return e; }
 function link(url,label){ if(!isHttp(url)) return el("span",label||url||""); const a=el("a",label||url); a.href=url; a.target="_blank"; a.rel="noopener noreferrer"; return a; }
 
-function sanitize(rep,inp){
+function sanitize(rep,inp,urls){
+  const hosts=new Set(); if(urls) urls.forEach(u=>{ try{ hosts.add(new URL(u).hostname.replace(/^www\./,"")); }catch{} });
+  const seen=u=>{ if(!hosts.size) return true; try{ return hosts.has(new URL(u).hostname.replace(/^www\./,"")); }catch{ return false; } };
   let dropped=0; const out=[];
   const excludedC=(inp.exclusions&&inp.exclusions.countries||[]).map(s=>s.toLowerCase());
   const excludedN=(inp.exclusions&&inp.exclusions.companies||[]).map(s=>s.toLowerCase());
   for(const c of (Array.isArray(rep.candidates)?rep.candidates:[])){
-    const reasons=(Array.isArray(c.fit_reasons)?c.fit_reasons:[]).filter(x=>x&&x.text&&isHttp(x.source_url));
+    const reasons=(Array.isArray(c.fit_reasons)?c.fit_reasons:[]).filter(x=>x&&x.text&&isHttp(x.source_url)&&seen(x.source_url));
     if(!c.name||!isHttp(c.website)||!reasons.length){ dropped++; continue; }
     if(excludedC.includes(String(c.country||"").toLowerCase())||excludedN.includes(String(c.name).toLowerCase())){ dropped++; continue; }
     c.fit_reasons=reasons;
-    c.certifications=(c.certifications||[]).filter(x=>x&&x.text&&isHttp(x.source_url));
-    c.credit_signals=(c.credit_signals||[]).filter(x=>x&&x.text&&isHttp(x.source_url));
+    c.certifications=(c.certifications||[]).filter(x=>x&&x.text&&isHttp(x.source_url)&&seen(x.source_url));
+    c.credit_signals=(c.credit_signals||[]).filter(x=>x&&x.text&&isHttp(x.source_url)&&seen(x.source_url));
     const ct=c.contact||{}; c.contact={};
     for(const k of ["email","phone","form_url"]){
-      const v=ct[k]; c.contact[k]=(v&&v.status==="verified"&&v.value&&isHttp(v.source_url))?{status:"verified",value:String(v.value),source_url:v.source_url}:{status:"needs_verification"};
+      const v=ct[k]; c.contact[k]=(v&&v.status==="verified"&&v.value&&isHttp(v.source_url)&&seen(v.source_url))?{status:"verified",value:String(v.value),source_url:v.source_url}:{status:"needs_verification"};
     }
     // recompute score from criteria (client-side, deterministic)
     let num=0,den=0; const bd={};
@@ -310,12 +358,12 @@ function sanitize(rep,inp){
   return {candidates:out,dropped};
 }
 
-function renderReport(text,inp){
+function renderReport(text,inp,urls){
   const box=$("report"); box.hidden=false; box.replaceChildren();
   const R=RL[inp.report_language]||RL.en;
   const rep=parseJson(text);
   if(!rep){ box.append(el("p",t("badjson"),"warn"), el("pre",text)); return; }
-  const {candidates,dropped}=sanitize(rep,inp);
+  const {candidates,dropped}=sanitize(rep,inp,urls);
   const nv=R.nv;
   const pb=el("button",t("print"),"primary noprint"); pb.addEventListener("click",()=>window.print()); box.append(pb);
   box.append(el("h2",R.summary));
