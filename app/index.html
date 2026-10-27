@@ -14,6 +14,10 @@ body{overflow-wrap:break-word}
 .req::after{content:" *";color:var(--bad)}
 .keylinks a{color:var(--acc)}
 button,select,input{min-height:40px}
+input[type=checkbox]{width:auto;min-height:0;margin-right:8px;transform:scale(1.25)}
+.consent{display:flex;align-items:flex-start;font-weight:400;margin:14px 0 4px}
+.fb{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.fb button[aria-pressed=true]{background:var(--acc);color:var(--accfg);border-color:var(--acc)}
 summary{list-style:none}
 summary::-webkit-details-marker{display:none}
 summary::before{content:"▸";margin-right:8px;color:var(--acc)}
@@ -128,12 +132,20 @@ pre{white-space:pre-wrap;background:var(--inp);border:1px solid var(--line);bord
       <label for="x-notes" id="l-notes"></label><textarea id="x-notes"></textarea>
     </details>
     <p class="note" id="t-saved"></p>
+    <label class="consent" for="consent"><input type="checkbox" id="consent"><span id="t-consent"></span></label>
+    <p class="note"><a id="privacylink" href="../privacy/" target="_blank" rel="noopener"></a></p>
     <p><button id="run" class="primary"></button> <button id="cancel" hidden></button></p>
     <p id="runstatus" role="status" class="note"></p>
   </section>
 </div>
 
 <section id="report" class="card" hidden></section>
+<section id="mydata" class="card noprint" hidden>
+  <h2 id="t-datah"></h2>
+  <p class="note" id="t-datanote"></p>
+  <button id="deldata"></button> <button id="delconfirm" hidden></button>
+  <p id="delstatus" role="status" class="note"></p>
+</section>
 </main>
 </div>
 
@@ -141,11 +153,14 @@ pre{white-space:pre-wrap;background:var(--inp);border:1px solid var(--line);bord
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, OAuthProvider, signOut, onAuthStateChanged }
   from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, collection, serverTimestamp, query, where, getDocs, deleteDoc }
+  from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 import { firebaseConfig } from "../firebase-config.js";
+const CONSENT_VER="2026-10-27";
 
 /* ---------- UI strings (ko/en). Report headings are separate (4 languages). ---------- */
 const UI = {
-ko:{more:"선택 항목 (입력할수록 결과가 정확해집니다)",steps:["AI 공급자를 고르고 본인의 API 키를 확인합니다.","찾는 파트너 조건과 내 기업·제품 정보를 입력합니다(* 필수).","시작을 누르면 AI가 검색·검증합니다. 보통 수 분 걸리며, 끝나면 보고서가 아래에 나타납니다.","보고서는 'PDF로 저장'으로 내려받습니다."],ex:{"f-countries":"예: 체코, 독일","f-tproducts":"예: 화장품 원료, 스킨케어","f-scale":"예: 중견기업 이상","f-reqcert":"예: CE, ISO 22716","c-name":"예: ㈜OOO","c-type":"예: 제조기업","c-model":"예: 자체 브랜드 + OEM","c-capacity":"예: 월 10만 개","c-certs":"예: ISO 9001","p-item":"예: 세럼","p-specs":"예: 30ml","p-price":"예: 개당 5~7달러","p-moq":"예: 3,000개","p-cap":"예: 100,000개","p-lead":"예: 주문 후 30일","x-countries":"예: 제외할 국가명","x-companies":"","x-terms":"예: T/T 30%, FOB","x-notes":""},title:"파트너 발굴 (베타)",sub:"기업·제품 정보를 입력하면 AI가 공개 웹 정보로 바이어/서플라이어 후보와 근거 출처를 정리합니다.",
+ko:{consent:"서비스를 이용하면 입력한 기업·제품·조건, 이메일, 생성된 후보·보고서, 사용 기록이 매칭 품질 개선을 위해 PartnerFit에 저장·분석되는 데 동의합니다. (필수, API 키는 저장하지 않습니다)",privacy:"개인정보 처리방침 보기",needconsent:"실행하려면 저장·분석 동의가 필요합니다.",datah:"내 데이터",datanote:"PartnerFit에 저장된 내 실행 기록·피드백·계정 정보를 삭제할 수 있습니다. 삭제 후에는 복구할 수 없습니다.",deldata:"내 기록 삭제",delconfirm:"정말 삭제합니다",deleting:"삭제 중…",deleted:"삭제했습니다.",delfail:"삭제 실패: ",dbfail:"기록 저장에 실패했습니다(보고서는 정상). 잠시 후 다시 시도해 주세요.",fbh:"이 후보가 도움이 되었나요? (매칭 품질 개선에 사용됩니다)",fb_useful:"도움이 됨",fb_not_relevant:"맞지 않음",fb_already_known:"이미 아는 회사",fb_contacted:"연락함",more:"선택 항목 (입력할수록 결과가 정확해집니다)",steps:["AI 공급자를 고르고 본인의 API 키를 확인합니다.","찾는 파트너 조건과 내 기업·제품 정보를 입력합니다(* 필수).","시작을 누르면 AI가 검색·검증합니다. 보통 수 분 걸리며, 끝나면 보고서가 아래에 나타납니다.","보고서는 'PDF로 저장'으로 내려받습니다."],ex:{"f-countries":"예: 체코, 독일","f-tproducts":"예: 화장품 원료, 스킨케어","f-scale":"예: 중견기업 이상","f-reqcert":"예: CE, ISO 22716","c-name":"예: ㈜OOO","c-type":"예: 제조기업","c-model":"예: 자체 브랜드 + OEM","c-capacity":"예: 월 10만 개","c-certs":"예: ISO 9001","p-item":"예: 세럼","p-specs":"예: 30ml","p-price":"예: 개당 5~7달러","p-moq":"예: 3,000개","p-cap":"예: 100,000개","p-lead":"예: 주문 후 30일","x-countries":"예: 제외할 국가명","x-companies":"","x-terms":"예: T/T 30%, FOB","x-notes":""},title:"파트너 발굴 (베타)",sub:"기업·제품 정보를 입력하면 AI가 공개 웹 정보로 바이어/서플라이어 후보와 근거 출처를 정리합니다.",
 needlogin:"로그인 후 이용할 수 있습니다.",logout:"로그아웃",
 keyh:"1. AI 공급자와 내 API 키",provider:"AI 공급자",cost:"이 서비스는 고객 본인의 API 키로 AI를 실행합니다. 토큰·웹검색 비용은 본인의 공급자 계정에 청구되며(ChatGPT·Claude 구독료와 별개), 금액은 모델과 검색 횟수에 따라 달라집니다. 키는 이 브라우저에서 공급자로 직접 전송되며 PartnerFit 서버에 저장하지 않습니다. 새로고침하면 사라집니다.",costOpenai:"OpenAI 웹검색 비용은 요금 페이지에서 확인 필요.",costAnthropic:"Anthropic 웹검색은 1,000회당 10달러(공식 문서 기준)와 토큰 비용이 듭니다. 이 서비스는 1회 실행당 검색을 최대 25회로 제한합니다.",keyhelp:"키는 각 공급자 콘솔(OpenAI Platform, Anthropic Console)에서 발급합니다. 구독(ChatGPT·Claude)과 API는 별도 결제입니다.",
 apikey:"API 키",verify:"키 확인",model:"모델 (내 계정에서 사용 가능한 목록)",
@@ -155,13 +170,13 @@ countries:"대상 국가 (쉼표로 구분)",tproducts:"대상 품목·업종 (�
 myco:"내 기업",cname:"기업명",ctype:"기업 유형",cmodel:"사업 모델",ccap:"공급 역량",ccerts:"보유 인증 (쉼표)",
 myprod:"내 제품",pitem:"품목",pspecs:"사양",pprice:"가격대",pmoq:"최소주문량(MOQ)",pcap:"월 공급량",plead:"납기",
 etc:"기타",xc:"제외 국가",xco:"제외 기업",terms:"거래 조건 (결제·인코텀즈)",notes:"메모",
-saved:"기업·제품·조건 입력값은 이 브라우저에만 저장됩니다(API 키는 저장하지 않음).",
+saved:"입력 내용 일부는 이 브라우저에도 보관됩니다. API 키는 어디에도 저장하지 않습니다.",
 run:"파트너 발굴 시작",cancel:"취소",
 needkey:"먼저 API 키를 확인하세요.",needfields:"필수 항목을 입력하세요: 대상 국가, 대상 품목, 기업명, 사업 모델, 제품 품목.",
 starting:"실행을 시작합니다…",running:"AI가 검색·검증 중입니다. 보통 수 분 걸립니다. (경과 ",done:"완료",failed:"실패: ",cancelled:"취소됨",
 badjson:"AI 응답을 보고서 형식으로 읽지 못했습니다. 원문을 아래에 표시합니다.",
 print:"PDF로 저장 (인쇄 창에서 'PDF로 저장' 선택)"},
-en:{more:"Optional details (more detail gives better results)",steps:["Choose an AI provider and verify your own API key.","Enter the partner criteria and your company/product details (* required).","Press Start. The AI searches and verifies; it usually takes a few minutes, then the report appears below.","Download the report with 'Save as PDF'."],ex:{"f-countries":"e.g. Czechia, Germany","f-tproducts":"e.g. cosmetic ingredients, skincare","f-scale":"e.g. mid-size or larger","f-reqcert":"e.g. CE, ISO 22716","c-name":"e.g. ACME Co.","c-type":"e.g. manufacturer","c-model":"e.g. own brand + OEM","c-capacity":"e.g. 100,000 units/month","c-certs":"e.g. ISO 9001","p-item":"e.g. serum","p-specs":"e.g. 30 ml","p-price":"e.g. USD 5-7 per unit","p-moq":"e.g. 3,000 units","p-cap":"e.g. 100,000 units","p-lead":"e.g. 30 days after order","x-countries":"e.g. country names to skip","x-companies":"","x-terms":"e.g. T/T 30%, FOB","x-notes":""},title:"Partner discovery (beta)",sub:"Enter your company and product details. The AI compiles buyer/supplier candidates with sources from public web information.",
+en:{consent:"By using the service, I agree that my company, product and criteria inputs, email, the generated candidates and report, and usage records are stored and analysed by PartnerFit to improve matching quality. (Required; API keys are never stored.)",privacy:"Read the privacy policy",needconsent:"Consent to storage and analysis is required to run.",datah:"My data",datanote:"You can delete your run history, feedback and account record stored by PartnerFit. Deletion cannot be undone.",deldata:"Delete my records",delconfirm:"Yes, delete",deleting:"Deleting…",deleted:"Deleted.",delfail:"Deletion failed: ",dbfail:"Could not save the record (your report is fine). Please try again later.",fbh:"Was this candidate useful? (used to improve matching quality)",fb_useful:"Useful",fb_not_relevant:"Not relevant",fb_already_known:"Already known",fb_contacted:"Contacted",more:"Optional details (more detail gives better results)",steps:["Choose an AI provider and verify your own API key.","Enter the partner criteria and your company/product details (* required).","Press Start. The AI searches and verifies; it usually takes a few minutes, then the report appears below.","Download the report with 'Save as PDF'."],ex:{"f-countries":"e.g. Czechia, Germany","f-tproducts":"e.g. cosmetic ingredients, skincare","f-scale":"e.g. mid-size or larger","f-reqcert":"e.g. CE, ISO 22716","c-name":"e.g. ACME Co.","c-type":"e.g. manufacturer","c-model":"e.g. own brand + OEM","c-capacity":"e.g. 100,000 units/month","c-certs":"e.g. ISO 9001","p-item":"e.g. serum","p-specs":"e.g. 30 ml","p-price":"e.g. USD 5-7 per unit","p-moq":"e.g. 3,000 units","p-cap":"e.g. 100,000 units","p-lead":"e.g. 30 days after order","x-countries":"e.g. country names to skip","x-companies":"","x-terms":"e.g. T/T 30%, FOB","x-notes":""},title:"Partner discovery (beta)",sub:"Enter your company and product details. The AI compiles buyer/supplier candidates with sources from public web information.",
 needlogin:"Please sign in to use this page.",logout:"Sign out",
 keyh:"1. AI provider and your API key",provider:"AI provider",cost:"This service runs the AI with your own API key. Token and web-search costs are billed to your provider account (separate from any ChatGPT/Claude subscription) and vary by model and number of searches. Your key is sent from this browser directly to the provider and is not stored on PartnerFit servers. It is cleared when you reload.",costOpenai:"OpenAI web-search cost: check OpenAI's pricing page (not verified).",costAnthropic:"Anthropic web search costs $10 per 1,000 searches (per official docs) plus token costs. This service limits each run to at most 25 searches.",keyhelp:"Create keys in each provider's console (OpenAI Platform, Anthropic Console). Subscriptions (ChatGPT/Claude) and API are billed separately.",
 apikey:"API key",verify:"Verify key",model:"Model (available to your account)",
@@ -171,7 +186,7 @@ countries:"Target countries (comma-separated)",tproducts:"Target products/indust
 myco:"My company",cname:"Company name",ctype:"Company type",cmodel:"Business model",ccap:"Supply capacity",ccerts:"Certifications held (comma)",
 myprod:"My product",pitem:"Item",pspecs:"Specifications",pprice:"Price range",pmoq:"MOQ",pcap:"Monthly capacity",plead:"Lead time",
 etc:"Other",xc:"Excluded countries",xco:"Excluded companies",terms:"Trade terms (payment/Incoterms)",notes:"Notes",
-saved:"Company, product and criteria inputs are saved only in this browser (the API key is never saved).",
+saved:"Some inputs are also kept in this browser. The API key is never stored anywhere.",
 run:"Start discovery",cancel:"Cancel",
 needkey:"Verify your API key first.",needfields:"Fill required fields: target countries, target products, company name, business model, product item.",
 starting:"Starting…",running:"The AI is searching and verifying. This usually takes a few minutes. (elapsed ",done:"Done",failed:"Failed: ",cancelled:"Cancelled",
@@ -202,7 +217,7 @@ const list = s => (s||"").split(",").map(x=>x.trim()).filter(Boolean);
 
 function applyUi(){
   document.documentElement.lang = lang;
-  const m = {"t-title":"title","t-sub":"sub","t-needlogin":"needlogin","logout":"logout","t-keyh":"keyh","l-provider":"provider","t-keyhelp":"keyhelp","l-apikey":"apikey","verify":"verify","l-model":"model","t-formh":"formh","l-ptype":"ptype","l-count":"count","l-rlang":"rlang","l-countries":"countries","l-tproducts":"tproducts","l-scale":"scale","l-reqcert":"reqcert","t-myco":"myco","l-cname":"cname","l-ctype":"ctype","l-cmodel":"cmodel","l-ccap":"ccap","l-ccerts":"ccerts","t-myprod":"myprod","l-pitem":"pitem","l-pspecs":"pspecs","l-pprice":"pprice","l-pmoq":"pmoq","l-pcap":"pcap","l-plead":"plead","l-xc":"xc","l-xco":"xco","l-terms":"terms","l-notes":"notes","t-saved":"saved","t-more":"more","run":"run","cancel":"cancel"};
+  const m = {"t-title":"title","t-sub":"sub","t-needlogin":"needlogin","logout":"logout","t-keyh":"keyh","l-provider":"provider","t-keyhelp":"keyhelp","l-apikey":"apikey","verify":"verify","l-model":"model","t-formh":"formh","l-ptype":"ptype","l-count":"count","l-rlang":"rlang","l-countries":"countries","l-tproducts":"tproducts","l-scale":"scale","l-reqcert":"reqcert","t-myco":"myco","l-cname":"cname","l-ctype":"ctype","l-cmodel":"cmodel","l-ccap":"ccap","l-ccerts":"ccerts","t-myprod":"myprod","l-pitem":"pitem","l-pspecs":"pspecs","l-pprice":"pprice","l-pmoq":"pmoq","l-pcap":"pcap","l-plead":"plead","l-xc":"xc","l-xco":"xco","l-terms":"terms","l-notes":"notes","t-saved":"saved","t-consent":"consent","privacylink":"privacy","t-datah":"datah","t-datanote":"datanote","deldata":"deldata","delconfirm":"delconfirm","t-more":"more","run":"run","cancel":"cancel"};
   for (const [id,k] of Object.entries(m)) $(id).textContent = t(k);
   $("t-steps").replaceChildren(...t("steps").map(x=>{const li=document.createElement("li"); li.textContent=x; return li;}));
   for(const [id,ph] of Object.entries(t("ex"))) $(id).placeholder=ph;
@@ -319,13 +334,22 @@ $("run").addEventListener("click", async ()=>{
   if(!state.key){ setStatus(t("needkey"),"bad"); return; }
   const inp=buildInput();
   if(!inp.target_countries.length||!inp.target_products.length||!inp.customer_company.name||!inp.customer_company.business_model||!inp.customer_product.item){ setStatus(t("needfields"),"bad"); return; }
+  if(!$("consent").checked){ setStatus(t("needconsent"),"bad"); return; }
   saveForm(); $("report").hidden=true; $("run").disabled=true; $("cancel").hidden=false; state.stop=false; state.currentId=null; setStatus(t("starting"));
   const t0=Date.now();
   try{
+    const sid=doc(collection(db,"searches")).id;
+    const meta={provider:state.provider,model:$("model").value,uiLang:lang,reportLanguage:inp.report_language};
+    try{
     const res = state.provider==="anthropic" ? await runAnthropic(inp,t0) : await runOpenAI(inp,t0);
-    if(!res){ setStatus(t("cancelled")); return; }
+    if(!res){ setStatus(t("cancelled")); saveRun(sid,{...meta,input:inp,status:"cancelled",durationMs:Date.now()-t0}); return; }
     setStatus(t("done"),"ok");
-    renderReport(res.text,inp,res.urls);
+    const out=renderReport(res.text,inp,res.urls,sid);
+    const ok=await saveRun(sid,{...meta,input:inp,durationMs:Date.now()-t0,status:out?"ok":"unparsed",
+      output:out?{summary:out.rep.summary||null,candidates:out.candidates,email_drafts:out.rep.email_drafts||[],sources:out.rep.sources||[]}:null,
+      returnedCount:out?out.candidates.length:0,droppedCount:out?out.dropped:0,rawText:out?null:String(res.text).slice(0,20000)});
+    if(!ok) $("runstatus").textContent+=" "+t("dbfail");
+    }catch(e){ saveRun(sid,{...meta,input:inp,status:"error",error:String(e.message||e).slice(0,500),durationMs:Date.now()-t0}); throw e; }
   }catch(e){ setStatus(t("failed")+(e.message||e),"bad"); }
   finally{ $("run").disabled=false; $("cancel").hidden=true; }
 });
@@ -373,11 +397,11 @@ function sanitize(rep,inp,urls){
   return {candidates:out,dropped};
 }
 
-function renderReport(text,inp,urls){
+function renderReport(text,inp,urls,sid){
   const box=$("report"); box.hidden=false; box.replaceChildren();
   const R=RL[inp.report_language]||RL.en;
   const rep=parseJson(text);
-  if(!rep){ box.append(el("p",t("badjson"),"warn"), el("pre",text)); return; }
+  if(!rep){ box.append(el("p",t("badjson"),"warn"), el("pre",text)); return null; }
   const {candidates,dropped}=sanitize(rep,inp,urls);
   const nv=R.nv;
   const pb=el("button",t("print"),"primary noprint"); pb.addEventListener("click",()=>window.print()); box.append(pb);
@@ -408,6 +432,7 @@ function renderReport(text,inp,urls){
     for(const k of Object.keys(W)){ tr.append(el("th",k+" ("+W[k]+"%)")); tr2.append(el("td",c.score_breakdown[k].status==="scored"?String(c.score_breakdown[k].points):R.excl)); }
     bdt.append(tr,tr2); const sc=el("div",undefined,"scroll"); sc.append(bdt); d.append(el("strong",R.bd), sc);
     if(c.ai_opinion) d.append(el("p",R.opinion+": "+c.ai_opinion));
+    d.append(feedbackRow(sid,c,candidates.indexOf(c)));
     if(Array.isArray(c.unverified)&&c.unverified.length) d.append(el("p",R.unv+": "+c.unverified.join("; "),"unv"));
     box.append(d);
   }
@@ -417,18 +442,60 @@ function renderReport(text,inp,urls){
   const srcs=(Array.isArray(rep.sources)?rep.sources:[]).filter(x=>x&&isHttp(x.url));
   if(srcs.length){ box.append(el("h2",R.src)); const ul=el("ul"); srcs.forEach(x=>{ const li=el("li"); li.append(link(x.url,x.title||x.url)); ul.append(li); }); box.append(ul); }
   box.scrollIntoView({behavior:"smooth"});
+  return {rep,candidates,dropped};
 }
+
+/* ---------- storage (Firestore) ---------- */
+const clean=o=>JSON.parse(JSON.stringify(o));
+async function saveRun(sid,data){
+  const u=auth.currentUser; if(!u) return false;
+  try{
+    await setDoc(doc(db,"users",u.uid),clean({email:u.email||null,displayName:u.displayName||null,providerId:(u.providerData&&u.providerData[0]&&u.providerData[0].providerId)||null,consentVersion:CONSENT_VER}),{merge:true});
+    await setDoc(doc(db,"users",u.uid),{lastRunAt:serverTimestamp(),consentAt:serverTimestamp()},{merge:true});
+    await setDoc(doc(db,"searches",sid),{...clean({uid:u.uid,consentVersion:CONSENT_VER,...data}),createdAt:serverTimestamp()});
+    return true;
+  }catch(e){ console.warn("save failed",e); return false; }
+}
+const RATINGS=["useful","not_relevant","already_known","contacted"];
+function feedbackRow(sid,c,idx){
+  const wrap=el("div"); wrap.append(el("p",t("fbh"),"note noprint")); const row=el("div",undefined,"fb noprint"); wrap.append(row);
+  RATINGS.forEach(r=>{
+    const b=el("button",t("fb_"+r)); b.type="button"; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click",async()=>{
+      const u=auth.currentUser; if(!u||!sid) return;
+      try{
+        await setDoc(doc(db,"feedback",sid+"_"+idx),{uid:u.uid,searchId:sid,index:idx,candidateName:c.name,country:c.country||null,website:c.website,rating:r,updatedAt:serverTimestamp()});
+        row.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+      }catch(e){ console.warn(e); $("runstatus").textContent=t("dbfail"); }
+    });
+    row.append(b);
+  });
+  return wrap;
+}
+$("deldata").addEventListener("click",()=>{ $("deldata").hidden=true; $("delconfirm").hidden=false; });
+$("delconfirm").addEventListener("click",async()=>{
+  const u=auth.currentUser; if(!u) return; const st=$("delstatus"); st.className="note"; st.textContent=t("deleting");
+  try{
+    for(const col of ["searches","feedback"]){
+      const snap=await getDocs(query(collection(db,col),where("uid","==",u.uid)));
+      for(const d of snap.docs) await deleteDoc(d.ref);
+    }
+    await deleteDoc(doc(db,"users",u.uid));
+    st.className="ok"; st.textContent=t("deleted");
+  }catch(e){ st.className="bad"; st.textContent=t("delfail")+(e.code||e.message||e); }
+  $("delconfirm").hidden=true; $("deldata").hidden=false;
+});
 
 /* ---------- auth ---------- */
 applyUi(); loadForm();
-const auth=getAuth(initializeApp(firebaseConfig));
+const fbApp=initializeApp(firebaseConfig); const auth=getAuth(fbApp); const db=getFirestore(fbApp);
 const errBox=$("login-err");
 async function login(provider){ errBox.textContent=""; try{ await signInWithPopup(auth,provider); }catch(e){ if(e.code!=="auth/popup-closed-by-user") errBox.textContent=String(e.code||e.message); } }
 $("login-google").addEventListener("click",()=>login(new GoogleAuthProvider()));
 $("login-kakao").addEventListener("click",()=>{ const p=new OAuthProvider("oidc.kakao"); p.addScope("openid"); login(p); });
 $("logout").addEventListener("click",()=>{ state.key=""; signOut(auth); });
 onAuthStateChanged(auth,user=>{
-  $("signedout").hidden=!!user; $("setup").hidden=!user; $("logout").hidden=!user; 
+  $("signedout").hidden=!!user; $("setup").hidden=!user; $("logout").hidden=!user; $("mydata").hidden=!user; 
   $("who").hidden=!user; if(user) $("who").textContent=user.displayName||user.email||"";
   if(!user){ state.key=""; $("report").hidden=true; }
 });
