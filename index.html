@@ -234,6 +234,7 @@ footer time{font-family:var(--utility)}
     <div class="auth" id="auth" hidden>
       <span class="who" id="auth-who" hidden></span>
       <button class="btn" id="auth-btn" type="button">Google 로그인</button>
+      <button class="btn" id="auth-kakao" type="button">카카오 로그인</button>
     </div>
   </header>
 
@@ -408,7 +409,7 @@ footer time{font-family:var(--utility)}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
+import { getAuth, GoogleAuthProvider, signInWithPopup, OAuthProvider, signOut, onAuthStateChanged }
   from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import { firebaseConfig } from "./firebase-config.js";
 
@@ -420,6 +421,7 @@ if (!firebaseConfig.apiKey || firebaseConfig.apiKey.startsWith("YOUR_")) {
   const box = document.getElementById("auth");
   const who = document.getElementById("auth-who");
   const btn = document.getElementById("auth-btn");
+  const kakao = document.getElementById("auth-kakao");
   box.hidden = false;
 
   btn.addEventListener("click", async () => {
@@ -432,14 +434,28 @@ if (!firebaseConfig.apiKey || firebaseConfig.apiKey.startsWith("YOUR_")) {
     }
   });
 
+  kakao.addEventListener("click", async () => {
+    try {
+      const provider = new OAuthProvider("oidc.kakao");
+      provider.addScope("openid");
+      await signInWithPopup(auth, provider);
+    } catch (e) {
+      console.error(e);
+      if (e.code !== "auth/popup-closed-by-user") kakao.textContent = "로그인 실패, 다시 시도";
+    }
+  });
+
   onAuthStateChanged(auth, (user) => {
     if (user) {
       who.textContent = user.displayName || "로그인됨";
       who.hidden = false;
       btn.textContent = "로그아웃";
+      kakao.hidden = true;
     } else {
       who.hidden = true;
       btn.textContent = "Google 로그인";
+      kakao.hidden = false;
+      kakao.textContent = "카카오 로그인";
     }
   });
 }
