@@ -13,6 +13,16 @@
 body{overflow-wrap:break-word}
 .req::after{content:" *";color:var(--bad)}
 .keylinks a{color:var(--acc)}
+#keyguide{margin-top:6px}
+#keydlg{max-height:calc(100dvh - 32px);overflow:auto;max-width:min(560px,calc(100vw - 32px));width:100%;border:1px solid var(--line,#d9dfea);border-radius:8px;padding:0;background:var(--card);color:var(--fg)}
+#keydlg::backdrop{background:rgba(10,20,40,.55)}
+#keydlg .in{padding:20px 22px 22px}
+#keydlg h2{margin:0 0 4px;font-size:18px}
+#keydlg h3{margin:18px 0 6px;font-size:15px}
+#keydlg ol{margin:0;padding-left:20px;font-size:14px;line-height:1.6}
+#keydlg li{margin:4px 0}
+#keydlg .x{float:right}
+#keydlg a{color:var(--acc)}
 button,select,input{min-height:40px}
 input[type=checkbox]{width:auto;min-height:0;margin-right:8px;transform:scale(1.25)}
 .consent{display:flex;align-items:flex-start;font-weight:400;margin:14px 0 4px}
@@ -77,6 +87,8 @@ pre{white-space:pre-wrap;background:var(--inp);border:1px solid var(--line);bord
   <p class="note" id="login-err" role="alert"></p>
 </section>
 
+<dialog id="keydlg" aria-labelledby="kg-title"><div class="in" id="kg-body"></div></dialog>
+
 <div id="setup" hidden>
   <section class="card">
     <h2 id="t-keyh"></h2>
@@ -85,6 +97,7 @@ pre{white-space:pre-wrap;background:var(--inp);border:1px solid var(--line);bord
     <select id="provider"><option value="openai">OpenAI</option><option value="anthropic">Anthropic (Claude)</option></select>
     <label for="apikey" id="l-apikey"></label>
     <input id="apikey" type="password" autocomplete="off" spellcheck="false" placeholder="sk-...">
+    <p><button type="button" id="keyguide"></button></p>
     <p><button id="verify"></button> <span id="keystatus" role="status"></span></p>
     <p class="note" id="t-keyhelp"></p>
     <p class="note keylinks"><a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer">OpenAI API keys</a> · <a href="https://platform.claude.com/" target="_blank" rel="noopener noreferrer">Anthropic Console</a></p>
@@ -160,7 +173,10 @@ const CONSENT_VER="2026-10-27";
 
 /* ---------- UI strings (ko/en). Report headings are separate (4 languages). ---------- */
 const UI = {
-ko:{consent:"서비스를 이용하면 입력한 회사·제품·조건, 이메일, 생성된 후보와 보고서, 이용 기록을 PartnerFit이 매칭 품질을 높이려고 저장·분석하는 데 동의합니다. (필수 · API 키는 저장하지 않습니다)",privacy:"개인정보 처리방침 보기",needconsent:"저장·분석에 동의해야 실행할 수 있습니다.",datah:"내 데이터",datanote:"PartnerFit에 저장된 내 실행 기록·피드백·계정 정보를 지울 수 있습니다. 지우면 되돌릴 수 없습니다.",deldata:"내 기록 삭제",delconfirm:"네, 삭제합니다",deleting:"삭제 중…",deleted:"삭제했습니다.",delfail:"삭제하지 못했습니다: ",dbfail:"기록은 저장하지 못했지만 보고서는 정상입니다. 잠시 뒤 다시 시도해 주세요.",fbh:"이 후보가 도움이 됐나요? (매칭 품질을 높이는 데 씁니다)",fb_useful:"도움 됨",fb_not_relevant:"맞지 않음",fb_already_known:"이미 아는 곳",fb_contacted:"연락했음",more:"선택 항목 (자세히 적을수록 결과가 정확해집니다)",steps:["AI 공급자를 고르고 본인의 API 키를 확인합니다.","찾으려는 파트너 조건과 우리 회사·제품 정보를 입력합니다(* 표시는 필수).","시작을 누르면 AI가 웹을 검색하고 근거를 확인합니다. 보통 몇 분 걸리며, 끝나면 아래에 보고서가 나타납니다.","보고서는 'PDF로 저장'으로 내려받습니다."],ex:{"f-countries":"예: 체코, 독일","f-tproducts":"예: 화장품 원료, 스킨케어","f-scale":"예: 중견기업 이상","f-reqcert":"예: CE, ISO 22716","c-name":"예: ㈜OOO","c-type":"예: 제조기업","c-model":"예: 자체 브랜드 + OEM","c-capacity":"예: 월 10만 개","c-certs":"예: ISO 9001","p-item":"예: 세럼","p-specs":"예: 30ml","p-price":"예: 개당 5~7달러","p-moq":"예: 3,000개","p-cap":"예: 100,000개","p-lead":"예: 주문 후 30일","x-countries":"예: 제외할 국가명","x-companies":"","x-terms":"예: T/T 30%, FOB","x-notes":""},title:"파트너 발굴 (베타)",sub:"회사와 제품 정보를 입력하면 AI가 공개된 웹에서 바이어·서플라이어 후보를 찾고, 근거 출처와 함께 정리합니다.",
+ko:{kgbtn:"API 키는 어디서 받나요?",kgh:"API 키 받는 방법",kgclose:"닫기",kgnote:"화면 구성과 메뉴 이름은 공급자 사정으로 바뀔 수 있습니다. 키는 만들 때 한 번만 보여 주는 경우가 많으니 바로 복사해 두세요. 키는 비밀번호처럼 다른 사람에게 알려 주지 마세요.",
+kgopenai:["아래 링크로 OpenAI Platform에 로그인합니다. ChatGPT 구독과는 별도로 관리되는 화면입니다.","왼쪽 메뉴의 API keys에서 'Create new secret key'를 누릅니다.","키 이름을 정해 만들고, 보이는 즉시 복사합니다.","Billing에서 결제수단을 등록하거나 크레딧을 충전합니다. 결제 설정이 없으면 실행이 실패할 수 있습니다(확인 필요)."],
+kganthropic:["아래 링크로 Anthropic Console에 로그인합니다. Claude 구독과는 별도로 관리됩니다.","API Keys 메뉴에서 'Create Key'를 누릅니다.","키 이름을 정해 만들고, 보이는 즉시 복사합니다.","Billing에서 크레딧을 충전합니다. 충전하지 않으면 실행이 실패할 수 있습니다(확인 필요)."],
+kgpaste:"복사한 키를 이 페이지의 'API 키' 칸에 붙여 넣고 '키 확인'을 누릅니다.",consent:"서비스를 이용하면 입력한 회사·제품·조건, 이메일, 생성된 후보와 보고서, 이용 기록을 PartnerFit이 매칭 품질을 높이려고 저장·분석하는 데 동의합니다. (필수 · API 키는 저장하지 않습니다)",privacy:"개인정보 처리방침 보기",needconsent:"저장·분석에 동의해야 실행할 수 있습니다.",datah:"내 데이터",datanote:"PartnerFit에 저장된 내 실행 기록·피드백·계정 정보를 지울 수 있습니다. 지우면 되돌릴 수 없습니다.",deldata:"내 기록 삭제",delconfirm:"네, 삭제합니다",deleting:"삭제 중…",deleted:"삭제했습니다.",delfail:"삭제하지 못했습니다: ",dbfail:"기록은 저장하지 못했지만 보고서는 정상입니다. 잠시 뒤 다시 시도해 주세요.",fbh:"이 후보가 도움이 됐나요? (매칭 품질을 높이는 데 씁니다)",fb_useful:"도움 됨",fb_not_relevant:"맞지 않음",fb_already_known:"이미 아는 곳",fb_contacted:"연락했음",more:"선택 항목 (자세히 적을수록 결과가 정확해집니다)",steps:["AI 공급자를 고르고 본인의 API 키를 확인합니다.","찾으려는 파트너 조건과 우리 회사·제품 정보를 입력합니다(* 표시는 필수).","시작을 누르면 AI가 웹을 검색하고 근거를 확인합니다. 보통 몇 분 걸리며, 끝나면 아래에 보고서가 나타납니다.","보고서는 'PDF로 저장'으로 내려받습니다."],ex:{"f-countries":"예: 체코, 독일","f-tproducts":"예: 화장품 원료, 스킨케어","f-scale":"예: 중견기업 이상","f-reqcert":"예: CE, ISO 22716","c-name":"예: ㈜OOO","c-type":"예: 제조기업","c-model":"예: 자체 브랜드 + OEM","c-capacity":"예: 월 10만 개","c-certs":"예: ISO 9001","p-item":"예: 세럼","p-specs":"예: 30ml","p-price":"예: 개당 5~7달러","p-moq":"예: 3,000개","p-cap":"예: 100,000개","p-lead":"예: 주문 후 30일","x-countries":"예: 제외할 국가명","x-companies":"","x-terms":"예: T/T 30%, FOB","x-notes":""},title:"파트너 발굴 (베타)",sub:"회사와 제품 정보를 입력하면 AI가 공개된 웹에서 바이어·서플라이어 후보를 찾고, 근거 출처와 함께 정리합니다.",
 needlogin:"로그인 후 이용할 수 있습니다.",logout:"로그아웃",
 keyh:"1. AI 공급자와 내 API 키",provider:"AI 공급자",cost:"이 서비스는 본인의 API 키로 AI를 실행합니다. ChatGPT·Claude 월 구독료와는 별개로, 토큰과 웹검색 비용이 쓴 만큼 본인의 공급자 API 계정에 따로 청구됩니다. 금액은 모델과 검색 횟수에 따라 달라집니다. 키는 이 브라우저에서 공급자로 바로 전송되고 PartnerFit 서버에는 저장하지 않습니다. 새로고침하면 사라집니다.",costOpenai:"OpenAI 웹검색 비용은 요금 페이지에서 확인 필요.",costAnthropic:"Anthropic 웹검색은 1,000회당 10달러(공식 문서 기준)와 토큰 비용이 듭니다. 이 서비스는 1회 실행당 검색을 최대 25회로 제한합니다.",keyhelp:"키는 각 공급자 콘솔(OpenAI Platform, Anthropic Console)에서 발급합니다. 구독(ChatGPT·Claude)과 API는 결제가 따로입니다.",
 apikey:"API 키",verify:"키 확인",model:"모델 (내 계정에서 쓸 수 있는 목록)",
@@ -176,7 +192,10 @@ needkey:"먼저 API 키를 확인해 주세요.",needfields:"필수 항목을 �
 starting:"시작하는 중…",running:"AI가 검색하고 확인하는 중입니다. 보통 몇 분 걸립니다. (경과 ",done:"완료",failed:"실패: ",cancelled:"취소됨",
 badjson:"AI 응답을 보고서 형식으로 읽지 못했습니다. 아래에 원문을 그대로 보여 드립니다.",
 print:"PDF로 저장 (인쇄 창에서 'PDF로 저장' 선택)"},
-en:{consent:"By using the service, I agree that my company, product and criteria inputs, email, the generated candidates and report, and usage records are stored and analysed by PartnerFit to improve matching quality. (Required; API keys are never stored.)",privacy:"Read the privacy policy",needconsent:"Consent to storage and analysis is required to run.",datah:"My data",datanote:"You can delete your run history, feedback and account record stored by PartnerFit. Deletion cannot be undone.",deldata:"Delete my records",delconfirm:"Yes, delete",deleting:"Deleting…",deleted:"Deleted.",delfail:"Deletion failed: ",dbfail:"Could not save the record (your report is fine). Please try again later.",fbh:"Was this candidate useful? (used to improve matching quality)",fb_useful:"Useful",fb_not_relevant:"Not relevant",fb_already_known:"Already known",fb_contacted:"Contacted",more:"Optional details (more detail gives better results)",steps:["Choose an AI provider and verify your own API key.","Enter the partner criteria and your company/product details (* required).","Press Start. The AI searches and verifies; it usually takes a few minutes, then the report appears below.","Download the report with 'Save as PDF'."],ex:{"f-countries":"e.g. Czechia, Germany","f-tproducts":"e.g. cosmetic ingredients, skincare","f-scale":"e.g. mid-size or larger","f-reqcert":"e.g. CE, ISO 22716","c-name":"e.g. ACME Co.","c-type":"e.g. manufacturer","c-model":"e.g. own brand + OEM","c-capacity":"e.g. 100,000 units/month","c-certs":"e.g. ISO 9001","p-item":"e.g. serum","p-specs":"e.g. 30 ml","p-price":"e.g. USD 5-7 per unit","p-moq":"e.g. 3,000 units","p-cap":"e.g. 100,000 units","p-lead":"e.g. 30 days after order","x-countries":"e.g. country names to skip","x-companies":"","x-terms":"e.g. T/T 30%, FOB","x-notes":""},title:"Partner discovery (beta)",sub:"Enter your company and product details. The AI compiles buyer/supplier candidates with sources from public web information.",
+en:{kgbtn:"Where do I get an API key?",kgh:"How to get an API key",kgclose:"Close",kgnote:"Screens and menu names may change on the provider's side. Many providers show a key only once when it is created, so copy it right away. Treat the key like a password and do not share it.",
+kgopenai:["Sign in to the OpenAI Platform with the link below. It is managed separately from a ChatGPT subscription.","In API keys in the left menu, click 'Create new secret key'.","Name the key, create it, and copy it as soon as it appears.","In Billing, add a payment method or buy credits. Runs may fail without billing set up (needs verification)."],
+kganthropic:["Sign in to the Anthropic Console with the link below. It is managed separately from a Claude subscription.","In the API Keys menu, click 'Create Key'.","Name the key, create it, and copy it as soon as it appears.","In Billing, buy credits. Runs may fail without credits (needs verification)."],
+kgpaste:"Paste the copied key into the 'API key' field on this page and press 'Verify key'.",consent:"By using the service, I agree that my company, product and criteria inputs, email, the generated candidates and report, and usage records are stored and analysed by PartnerFit to improve matching quality. (Required; API keys are never stored.)",privacy:"Read the privacy policy",needconsent:"Consent to storage and analysis is required to run.",datah:"My data",datanote:"You can delete your run history, feedback and account record stored by PartnerFit. Deletion cannot be undone.",deldata:"Delete my records",delconfirm:"Yes, delete",deleting:"Deleting…",deleted:"Deleted.",delfail:"Deletion failed: ",dbfail:"Could not save the record (your report is fine). Please try again later.",fbh:"Was this candidate useful? (used to improve matching quality)",fb_useful:"Useful",fb_not_relevant:"Not relevant",fb_already_known:"Already known",fb_contacted:"Contacted",more:"Optional details (more detail gives better results)",steps:["Choose an AI provider and verify your own API key.","Enter the partner criteria and your company/product details (* required).","Press Start. The AI searches and verifies; it usually takes a few minutes, then the report appears below.","Download the report with 'Save as PDF'."],ex:{"f-countries":"e.g. Czechia, Germany","f-tproducts":"e.g. cosmetic ingredients, skincare","f-scale":"e.g. mid-size or larger","f-reqcert":"e.g. CE, ISO 22716","c-name":"e.g. ACME Co.","c-type":"e.g. manufacturer","c-model":"e.g. own brand + OEM","c-capacity":"e.g. 100,000 units/month","c-certs":"e.g. ISO 9001","p-item":"e.g. serum","p-specs":"e.g. 30 ml","p-price":"e.g. USD 5-7 per unit","p-moq":"e.g. 3,000 units","p-cap":"e.g. 100,000 units","p-lead":"e.g. 30 days after order","x-countries":"e.g. country names to skip","x-companies":"","x-terms":"e.g. T/T 30%, FOB","x-notes":""},title:"Partner discovery (beta)",sub:"Enter your company and product details. The AI compiles buyer/supplier candidates with sources from public web information.",
 needlogin:"Please sign in to use this page.",logout:"Sign out",
 keyh:"1. AI provider and your API key",provider:"AI provider",cost:"This service runs the AI with your own API key. Token and web-search costs are billed to your provider account (separate from any ChatGPT/Claude subscription) and vary by model and number of searches. Your key is sent from this browser directly to the provider and is not stored on PartnerFit servers. It is cleared when you reload.",costOpenai:"OpenAI web-search cost: check OpenAI's pricing page (not verified).",costAnthropic:"Anthropic web search costs $10 per 1,000 searches (per official docs) plus token costs. This service limits each run to at most 25 searches.",keyhelp:"Create keys in each provider's console (OpenAI Platform, Anthropic Console). Subscriptions (ChatGPT/Claude) and API are billed separately.",
 apikey:"API key",verify:"Verify key",model:"Model (available to your account)",
@@ -217,7 +236,7 @@ const list = s => (s||"").split(",").map(x=>x.trim()).filter(Boolean);
 
 function applyUi(){
   document.documentElement.lang = lang;
-  const m = {"t-title":"title","t-sub":"sub","t-needlogin":"needlogin","logout":"logout","t-keyh":"keyh","l-provider":"provider","t-keyhelp":"keyhelp","l-apikey":"apikey","verify":"verify","l-model":"model","t-formh":"formh","l-ptype":"ptype","l-count":"count","l-rlang":"rlang","l-countries":"countries","l-tproducts":"tproducts","l-scale":"scale","l-reqcert":"reqcert","t-myco":"myco","l-cname":"cname","l-ctype":"ctype","l-cmodel":"cmodel","l-ccap":"ccap","l-ccerts":"ccerts","t-myprod":"myprod","l-pitem":"pitem","l-pspecs":"pspecs","l-pprice":"pprice","l-pmoq":"pmoq","l-pcap":"pcap","l-plead":"plead","l-xc":"xc","l-xco":"xco","l-terms":"terms","l-notes":"notes","t-saved":"saved","t-consent":"consent","privacylink":"privacy","t-datah":"datah","t-datanote":"datanote","deldata":"deldata","delconfirm":"delconfirm","t-more":"more","run":"run","cancel":"cancel"};
+  const m = {"t-title":"title","t-sub":"sub","t-needlogin":"needlogin","logout":"logout","t-keyh":"keyh","keyguide":"kgbtn","l-provider":"provider","t-keyhelp":"keyhelp","l-apikey":"apikey","verify":"verify","l-model":"model","t-formh":"formh","l-ptype":"ptype","l-count":"count","l-rlang":"rlang","l-countries":"countries","l-tproducts":"tproducts","l-scale":"scale","l-reqcert":"reqcert","t-myco":"myco","l-cname":"cname","l-ctype":"ctype","l-cmodel":"cmodel","l-ccap":"ccap","l-ccerts":"ccerts","t-myprod":"myprod","l-pitem":"pitem","l-pspecs":"pspecs","l-pprice":"pprice","l-pmoq":"pmoq","l-pcap":"pcap","l-plead":"plead","l-xc":"xc","l-xco":"xco","l-terms":"terms","l-notes":"notes","t-saved":"saved","t-consent":"consent","privacylink":"privacy","t-datah":"datah","t-datanote":"datanote","deldata":"deldata","delconfirm":"delconfirm","t-more":"more","run":"run","cancel":"cancel"};
   for (const [id,k] of Object.entries(m)) $(id).textContent = t(k);
   $("t-steps").replaceChildren(...t("steps").map(x=>{const li=document.createElement("li"); li.textContent=x; return li;}));
   for(const [id,ph] of Object.entries(t("ex"))) $(id).placeholder=ph;
@@ -485,6 +504,25 @@ $("delconfirm").addEventListener("click",async()=>{
   }catch(e){ st.className="bad"; st.textContent=t("delfail")+(e.code||e.message||e); }
   $("delconfirm").hidden=true; $("deldata").hidden=false;
 });
+
+/* ---------- API key guide (popup) ---------- */
+const KEYLINK={openai:["https://platform.openai.com/api-keys","platform.openai.com/api-keys"],anthropic:["https://platform.claude.com/","platform.claude.com"]};
+function openKeyGuide(){
+  const dlg=$("keydlg"), body=$("kg-body"); body.textContent="";
+  const x=el("button",t("kgclose"),"x"); x.type="button"; x.addEventListener("click",()=>dlg.close());
+  const h=el("h2",t("kgh")); h.id="kg-title"; body.append(x,h,el("p",t("kgnote"),"note"));
+  const order=$("provider").value==="anthropic"?["anthropic","openai"]:["openai","anthropic"];
+  order.forEach(k=>{
+    body.append(el("h3",k==="openai"?"OpenAI":"Anthropic (Claude)"));
+    const ol=el("ol"); t("kg"+k).forEach(x=>ol.append(el("li",x))); body.append(ol);
+    const a=el("a",KEYLINK[k][1]); a.href=KEYLINK[k][0]; a.target="_blank"; a.rel="noopener noreferrer";
+    const p=el("p",undefined,"note"); p.append(a); body.append(p);
+  });
+  body.append(el("h3","✓"), el("p",t("kgpaste")));
+  dlg.showModal(); x.focus();
+}
+$("keyguide").addEventListener("click",openKeyGuide);
+$("keydlg").addEventListener("click",e=>{ if(e.target===$("keydlg")) $("keydlg").close(); });
 
 /* ---------- auth ---------- */
 applyUi(); loadForm();
