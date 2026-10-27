@@ -1,7 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://partnerfit-nine.vercel.app/</loc>
     <lastmod>2026-10-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://partnerfit-nine.vercel.app/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://partnerfit-nine.vercel.app/en/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://partnerfit-nine.vercel.app/zh/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://partnerfit-nine.vercel.app/ja/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://partnerfit-nine.vercel.app/"/>
+  </url>
+  <url>
+    <loc>https://partnerfit-nine.vercel.app/en/</loc>
+    <lastmod>2026-10-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://partnerfit-nine.vercel.app/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://partnerfit-nine.vercel.app/en/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://partnerfit-nine.vercel.app/zh/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://partnerfit-nine.vercel.app/ja/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://partnerfit-nine.vercel.app/"/>
+  </url>
+  <url>
+    <loc>https://partnerfit-nine.vercel.app/zh/</loc>
+    <lastmod>2026-10-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://partnerfit-nine.vercel.app/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://partnerfit-nine.vercel.app/en/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://partnerfit-nine.vercel.app/zh/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://partnerfit-nine.vercel.app/ja/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://partnerfit-nine.vercel.app/"/>
+  </url>
+  <url>
+    <loc>https://partnerfit-nine.vercel.app/ja/</loc>
+    <lastmod>2026-10-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://partnerfit-nine.vercel.app/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://partnerfit-nine.vercel.app/en/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://partnerfit-nine.vercel.app/zh/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://partnerfit-nine.vercel.app/ja/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://partnerfit-nine.vercel.app/"/>
   </url>
 </urlset>

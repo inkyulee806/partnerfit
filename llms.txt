@@ -20,6 +20,9 @@
 
 - [홈페이지](https://partnerfit-nine.vercel.app/): 서비스 소개, 작동 방식, 특징, 자주 묻는 질문
 - [자주 묻는 질문](https://partnerfit-nine.vercel.app/#faq)
+- [English](https://partnerfit-nine.vercel.app/en/)
+- [中文](https://partnerfit-nine.vercel.app/zh/)
+- [日本語](https://partnerfit-nine.vercel.app/ja/)
 
 ## 정보
 

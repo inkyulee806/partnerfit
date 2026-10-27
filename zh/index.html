@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="google-site-verification" content="ZQdGMIHGPKnsdlQxcjTY3EKxHMFjeM6UEE6RJKSs4Ys">
+<meta name="naver-site-verification" content="7a96e30319742b06eb6045054c26ec27d5f268b6">
+<title>PartnerFit | AI 海外买家与供应商开发</title>
+<meta name="description" content="输入企业和产品信息，AI 会搜寻海外买家和供应商候选，并自动生成匹配度分析报告和定制邮件草稿。">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://partnerfit-nine.vercel.app/zh/">
+<!--HREFLANG--><link rel="alternate" hreflang="ko" href="https://partnerfit-nine.vercel.app/">
+<link rel="alternate" hreflang="en" href="https://partnerfit-nine.vercel.app/en/">
+<link rel="alternate" hreflang="zh-CN" href="https://partnerfit-nine.vercel.app/zh/">
+<link rel="alternate" hreflang="ja" href="https://partnerfit-nine.vercel.app/ja/">
+<link rel="alternate" hreflang="x-default" href="https://partnerfit-nine.vercel.app/"><!--/HREFLANG-->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PartnerFit">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:title" content="PartnerFit | AI 海外买家与供应商开发">
+<meta property="og:description" content="输入企业和产品信息，AI 会搜寻海外买家和供应商候选，并自动生成匹配度分析报告和定制邮件草稿。">
+<meta property="og:url" content="https://partnerfit-nine.vercel.app/zh/">
+<meta property="og:image" content="https://partnerfit-nine.vercel.app/og-image-zh.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="PartnerFit AI 海外买家与供应商开发">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://partnerfit-nine.vercel.app/og-image-zh.png">
+<meta name="twitter:title" content="PartnerFit | AI 海外买家与供应商开发">
+<meta name="twitter:description" content="输入企业和产品信息，AI 会搜寻海外买家和供应商候选，并自动生成匹配度分析报告和定制邮件草稿。">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://partnerfit-nine.vercel.app/#org",
+      "name": "PartnerFit",
+      "alternateName": "파트너핏",
+      "url": "https://partnerfit-nine.vercel.app/",
+      "description": "基于企业和产品信息，用 AI 搜寻并推荐海外买家和供应商候选，并自动生成分析报告和定制邮件草稿的服务"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://partnerfit-nine.vercel.app/#website",
+      "name": "PartnerFit",
+      "url": "https://partnerfit-nine.vercel.app/",
+      "inLanguage": "zh-CN",
+      "publisher": { "@id": "https://partnerfit-nine.vercel.app/#org" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://partnerfit-nine.vercel.app/#webpage",
+      "url": "https://partnerfit-nine.vercel.app/zh/",
+      "name": "PartnerFit | AI 海外买家与供应商开发",
+      "inLanguage": "zh-CN",
+      "isPartOf": { "@id": "https://partnerfit-nine.vercel.app/#website" },
+      "dateModified": "2026-10-26"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://partnerfit-nine.vercel.app/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "PartnerFit 是免费的吗？",
+          "acceptedAnswer": { "@type": "Answer", "text": "是的。PartnerFit 可以免费使用。" }
+        },
+        {
+          "@type": "Question",
+          "name": "PartnerFit 是什么？",
+          "acceptedAnswer": { "@type": "Answer", "text": "PartnerFit 是一项服务：基于企业和产品信息，用 AI 搜寻并推荐海外买家和供应商候选，并自动生成分析报告和定制邮件草稿。" }
+        },
+        {
+          "@type": "Question",
+          "name": "买家开发和供应商开发有什么不同？",
+          "acceptedAnswer": { "@type": "Answer", "text": "买家开发是寻找符合您产品和供货条件的进口商、经销商、品牌企业和行业需求企业；供应商开发是寻找符合您采购条件的制造商、原材料及零部件供应商和 OEM/ODM 企业。评估标准也不同：对买家，重点看其经营的产品以及流通、采购方式；对供应商，重点看供货能力、规格、数量和交期。" }
+        },
+        {
+          "@type": "Question",
+          "name": "需要输入哪些信息？",
+          "acceptedAnswer": { "@type": "Answer", "text": "需要输入企业类型、商业模式、制造和供货能力、要销售或采购的产品、规格、价格区间、数量、认证，以及目标市场和交易条件。" }
+        },
+        {
+          "@type": "Question",
+          "name": "最终能得到什么成果？",
+          "acceptedAnswer": { "@type": "Answer", "text": "您将收到一份报告，内容包括候选企业概况、经营产品、业务角色、交易匹配度、推荐依据、联系信息和优先顺序，以及用于销售提案、采购咨询和报价请求的多语言邮件草稿。" }
+        },
+        {
+          "@type": "Question",
+          "name": "只能用于特定国家或品类吗？",
+          "acceptedAnswer": { "@type": "Answer", "text": "不是。不限定特定国家或品类，支持搜寻销售渠道和供货渠道。" }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout concept: a customs-manifest page — numbered line items, a running
+   index rail, and tabular rhythm rather than a marketing hero stack. */
+:root{
+  --bg:#f5f4f0; --fg:#1c2127; --muted:#5b6169; --surface:#ffffff;
+  --border:#ddd9cc; --accent:#9c6a2c; --accent-fg:#ffffff;
+  --mono:#6b6054;
+  --display:"Instrument Sans",system-ui,sans-serif;
+  --body:"Instrument Sans",system-ui,sans-serif;
+  --utility:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#11151c; --fg:#ebe8e0; --muted:#9a978d; --surface:#181d25;
+    --border:#2b313b; --accent:#d9a654; --accent-fg:#14100a; --mono:#8d8a7f;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11151c; --fg:#ebe8e0; --muted:#9a978d; --surface:#181d25;
+  --border:#2b313b; --accent:#d9a654; --accent-fg:#14100a; --mono:#8d8a7f;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);margin:0;
+  padding-inline:20px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);font-weight:650;letter-spacing:-0.01em;
+  text-wrap:balance;margin:0}
+p{margin:0}
+a{color:inherit}
+.wrap{max-width:920px;margin:0 auto}
+.eyebrow{font-family:var(--utility);font-size:12px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--mono)}
+
+/* ---- header ---- */
+header{display:flex;align-items:center;justify-content:space-between;
+  padding-block:22px;border-bottom:1px solid var(--border);
+  position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);
+  z-index:10;gap:12px;flex-wrap:wrap}
+.logo{font-family:var(--display);font-weight:700;font-size:19px;
+  display:flex;align-items:baseline;gap:8px}
+.logo .mark{display:inline-block;width:9px;height:9px;background:var(--accent);
+  border-radius:1px}
+nav{display:flex;gap:22px;font-size:14px;color:var(--muted)}
+nav a{text-decoration:none}
+nav a:hover{color:var(--fg)}
+
+/* ---- auth ---- */
+:lang(ja) h1,:lang(ja) h2,:lang(ja) h3{word-break:auto-phrase}
+.lang{display:flex;gap:10px;font-size:12px;color:var(--muted)}
+.lang a{text-decoration:none}
+.lang a[aria-current]{color:var(--fg);font-weight:600}
+.auth{display:flex;align-items:center;gap:10px;font-size:13px}
+.auth[hidden]{display:none}
+.auth .who{color:var(--muted);max-width:14ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.auth .btn{padding:8px 14px;font-size:13px}
+
+/* ---- hero ---- */
+.hero{padding-block:64px 48px;border-bottom:1px solid var(--border)}
+.hero .eyebrow{margin-bottom:16px}
+.hero h1{font-size:clamp(32px,5vw,50px);line-height:1.08;max-width:14ch}
+.hero .sub{margin-top:20px;max-width:46ch;font-size:17px;color:var(--muted)}
+.hero .ctas{margin-top:32px;display:flex;gap:12px;flex-wrap:wrap}
+.btn{font-family:var(--body);font-size:14px;font-weight:600;padding:12px 20px;
+  border-radius:3px;border:1px solid var(--border);text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;cursor:pointer;background:none;color:var(--fg)}
+.btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.btn:hover{border-color:var(--accent)}
+
+/* ---- manifest-line section header ---- */
+.line{display:flex;gap:18px;align-items:baseline;padding-block:40px 24px}
+.line .idx{font-family:var(--utility);font-size:13px;color:var(--accent);
+  flex-shrink:0;padding-top:4px}
+.line h2{font-size:24px}
+
+section{border-bottom:1px solid var(--border)}
+section:last-of-type{border-bottom:none}
+.section-body{padding-bottom:48px}
+
+/* ---- audience cards ---- */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:4px;
+  padding:22px;min-width:0}
+.card .tag{font-family:var(--utility);font-size:11px;color:var(--accent);
+  text-transform:uppercase;letter-spacing:.06em}
+.card h3{font-size:17px;margin-top:8px}
+.card p{margin-top:10px;font-size:14px;color:var(--muted)}
+
+/* ---- process ---- */
+.process{display:flex;flex-direction:column}
+.step{display:grid;grid-template-columns:40px 1fr;gap:16px;padding-block:16px;
+  border-top:1px solid var(--border)}
+.step:first-child{border-top:none}
+.step .num{font-family:var(--utility);font-size:13px;color:var(--mono);padding-top:2px}
+.step .label{font-weight:600;font-size:15px}
+.step .desc{margin-top:4px;font-size:14px;color:var(--muted);max-width:60ch}
+
+/* ---- differentiators ---- */
+.grid4{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.feat{min-width:0}
+.feat .eyebrow{color:var(--accent)}
+.feat h3{font-size:16px;margin-top:6px}
+.feat p{margin-top:8px;font-size:14px;color:var(--muted)}
+
+/* ---- contact ---- */
+.contact{padding-block:48px;display:flex;flex-direction:column;gap:18px}
+.contact h2{font-size:26px;max-width:18ch}
+.contact-row{display:flex;gap:28px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.note{font-size:13px;color:var(--mono)}
+
+footer{padding-block:28px;display:flex;justify-content:space-between;gap:12px;
+  flex-wrap:wrap;font-size:13px;color:var(--mono)}
+
+@media (max-width:620px){
+  .grid2,.grid4{grid-template-columns:1fr}
+  nav{gap:14px;font-size:13px}
+  .hero{padding-block:44px 32px}
+}
+
+/* ---- faq ---- */
+.faq{display:flex;flex-direction:column}
+.faq-item{padding-block:18px;border-top:1px solid var(--border)}
+.faq-item:first-child{border-top:none;padding-top:0}
+.faq-item h3{font-size:16px}
+.faq-item p{margin-top:8px;font-size:14px;color:var(--muted);max-width:64ch}
+footer time{font-family:var(--utility)}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="logo"><span class="mark"></span>PartnerFit</div>
+    <nav>
+      <a href="#service">服务</a>
+      <a href="#process">运作方式</a>
+      <a href="#edge">特色</a>
+      <a href="#faq">常见问题</a>
+      <a href="#contact">联系我们</a>
+    </nav>
+    <!--LANG--><nav class="lang" aria-label="Language"><a href="/" hreflang="ko" lang="ko">한국어</a><a href="/en/" hreflang="en" lang="en">English</a><a href="/zh/" hreflang="zh-CN" lang="zh-CN" aria-current="page">中文</a><a href="/ja/" hreflang="ja" lang="ja">日本語</a></nav><!--/LANG-->
+    <div class="auth" id="auth" hidden>
+      <span class="who" id="auth-who" hidden></span>
+      <button class="btn" id="auth-btn" type="button">使用 Google 登录</button>
+      <button class="btn" id="auth-kakao" type="button">使用 Kakao 登录</button>
+    </div>
+  </header>
+
+  <main>
+  <section class="hero">
+    <div class="eyebrow">AI 驱动的全球买家与供应商开发</div>
+    <h1>海外合作伙伴搜寻，<br>一份报告搞定。</h1>
+    <p class="sub">输入企业和产品信息，AI 会在全球范围内搜寻买家和供应商候选，并自动生成匹配度分析报告和定制邮件草稿。</p>
+    <div class="ctas">
+      <a href="#contact" class="btn primary">咨询服务</a>
+      <a href="#process" class="btn">查看运作方式</a>
+    </div>
+  </section>
+
+  <section id="service">
+    <div class="line"><span class="idx">01 — 概述</span><h2>PartnerFit 是什么样的服务？</h2></div>
+    <div class="section-body">
+      <p style="max-width:64ch;color:var(--fg);font-size:16px">
+        PartnerFit 是一项服务：基于企业和产品信息，用 AI 搜寻并推荐海外买家和供应商候选，并自动生成分析报告和定制邮件草稿。
+      </p>
+      <p style="max-width:64ch;color:var(--muted);font-size:15px;margin-top:12px">
+        不限定特定国家或品类，在全球范围内同时搜寻销售渠道和供货渠道。
+        综合分析客户企业的类型、产品信息和交易条件，只筛选出适合当前业务方式的合作伙伴。
+      </p>
+      <p style="max-width:64ch;color:var(--muted);font-size:13px;margin-top:12px">
+        参考（依据与来源）：作为公共机构收费的海外买家开发代办案例，KOTRA 出口24（Export24）对潜在买家开发的收费标准为每家企业 15 万韩元（不含增值税）。相比之下，PartnerFit 是免费的。
+        来源：<a href="https://www.kotra.or.kr/upload/2024/11/05/BM202411050000045376_0.pdf" rel="noopener" style="color:var(--accent)">KOTRA 出口24 全球代办（海外市场调查）服务介绍（2024 年 11 月条款适用版）</a>
+      </p>
+      <div class="grid2" style="margin-top:28px">
+        <div class="card">
+          <div class="tag">买家开发</div>
+          <h3>希望拓展海外销售渠道的企业</h3>
+          <p>适用于制造企业、品牌企业、贸易企业寻找海外进口商、经销商和行业需求企业时。</p>
+        </div>
+        <div class="card">
+          <div class="tag">供应商开发</div>
+          <h3>希望获得海外供货渠道的企业</h3>
+          <p>适用于在海外寻找原材料、零部件和成品的制造商及 OEM/ODM 供应商时。</p>
+        </div>
+      </div>
+      <p style="margin-top:24px;font-size:14px;color:var(--mono)">
+        共同的难题：收集分散在多种语言中的企业信息、比较并筛选候选企业、准备首次联系，
+        都需要耗费时间和人力。即使是同一种产品，合适的对象也会因企业类型和业务方式而异。
+      </p>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="line"><span class="idx">02 — 流程</span><h2>如何运作？从输入到邮件草稿共五步</h2></div>
+    <div class="section-body">
+      <div class="process">
+        <div class="step">
+          <div class="num">01</div>
+          <div><div class="label">输入客户信息</div>
+            <div class="desc">输入企业类型、商业模式、制造和供货能力、销售或采购的产品、规格、价格区间、数量、认证，以及目标市场和交易条件。</div></div>
+        </div>
+        <div class="step">
+          <div class="num">02</div>
+          <div><div class="label">AI 全球企业搜寻</div>
+            <div class="desc">买家开发搜寻进口商、经销商、品牌企业和行业需求企业；供应商开发搜寻制造商、零部件供应商和 OEM/ODM 企业。</div></div>
+        </div>
+        <div class="step">
+          <div class="num">03</div>
+          <div><div class="label">匹配度分析</div>
+            <div class="desc">以经营产品、业务角色和交易条件的吻合度为标准，对候选企业进行比较和评估。</div></div>
+        </div>
+        <div class="step">
+          <div class="num">04</div>
+          <div><div class="label">自动生成报告</div>
+            <div class="desc">自动生成包含候选企业概况、推荐依据、联系信息和优先顺序的报告。</div></div>
+        </div>
+        <div class="step">
+          <div class="num">05</div>
+          <div><div class="label">撰写邮件草稿</div>
+            <div class="desc">结合客户和候选企业的特点，用多种语言准备销售提案、采购咨询和报价请求的草稿。</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="edge">
+    <div class="line"><span class="idx">03 — 特色</span><h2>PartnerFit 有哪些特色？</h2></div>
+    <div class="section-body">
+      <div class="grid4">
+        <div class="feat">
+          <div class="eyebrow">定制匹配</div>
+          <h3>企业业务方式 × 产品特性 × 交易条件</h3>
+          <p>三者综合考虑，即使是同一种产品，也会为不同企业找到不同的合适对象。</p>
+        </div>
+        <div class="feat">
+          <div class="eyebrow">按目的分析</div>
+          <h3>买家与供应商，标准不同</h3>
+          <p>对买家主要评估其经营的产品以及流通、采购方式；对供应商主要评估供货能力、规格、数量和交期。</p>
+        </div>
+        <div class="feat">
+          <div class="eyebrow">销售与采购一体</div>
+          <h3>一份企业信息，双向搜寻</h3>
+          <p>利用同一份企业和产品信息，可以同时搜寻买家和供应商。</p>
+        </div>
+        <div class="feat">
+          <div class="eyebrow">AI 自动化</div>
+          <h3>从搜寻到邮件草稿，一气呵成</h3>
+          <p>多语言信息搜寻、候选企业比较、报告和邮件草稿撰写连接成一个完整流程。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="report">
+    <div class="line"><span class="idx">示例</span><h2>报告的构成如下</h2></div>
+    <div class="section-body">
+      <p style="max-width:64ch;color:var(--muted);font-size:14px;margin-bottom:20px">以下示例展示报告的项目构成。不包含真实的企业名称和数据，结果会因您输入的产品和市场条件而不同。</p>
+      <img src="../report-example-zh.png" width="1000" height="520" loading="lazy" style="max-width:100%;height:auto;border:1px solid var(--border);border-radius:4px;margin-bottom:20px" alt="PartnerFit 报告构成示例：候选企业概况、交易匹配度、联系信息与优先顺序、邮件草稿共 4 项">
+      <div class="grid2">
+        <div class="card"><div class="tag">示例 · 1</div><h3>候选企业概况</h3><p>企业名称、国家、业务角色、经营产品</p></div>
+        <div class="card"><div class="tag">示例 · 2</div><h3>交易匹配度</h3><p>与所输入产品和条件的匹配情况及推荐依据</p></div>
+        <div class="card"><div class="tag">示例 · 3</div><h3>联系信息与优先顺序</h3><p>可联系的公开信息及接洽优先顺序</p></div>
+        <div class="card"><div class="tag">示例 · 4</div><h3>邮件草稿</h3><p>用于销售提案、采购咨询和报价请求的多语言草稿</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="line"><span class="idx">04 — 常见问题</span><h2>常见问题</h2></div>
+    <div class="section-body">
+      <div class="faq">
+        <div class="faq-item">
+          <h3>PartnerFit 是免费的吗？</h3>
+          <p>是的。PartnerFit 可以免费使用。</p>
+        </div>
+        <div class="faq-item">
+          <h3>PartnerFit 是什么？</h3>
+          <p>PartnerFit 是一项服务：基于企业和产品信息，用 AI 搜寻并推荐海外买家和供应商候选，并自动生成分析报告和定制邮件草稿。</p>
+        </div>
+        <div class="faq-item">
+          <h3>买家开发和供应商开发有什么不同？</h3>
+          <p>买家开发是寻找符合您产品和供货条件的进口商、经销商、品牌企业和行业需求企业；供应商开发是寻找符合您采购条件的制造商、原材料及零部件供应商和 OEM/ODM 企业。评估标准也不同：对买家，重点看其经营的产品以及流通、采购方式；对供应商，重点看供货能力、规格、数量和交期。</p>
+        </div>
+        <div class="faq-item">
+          <h3>需要输入哪些信息？</h3>
+          <p>需要输入企业类型、商业模式、制造和供货能力、要销售或采购的产品、规格、价格区间、数量、认证，以及目标市场和交易条件。</p>
+        </div>
+        <div class="faq-item">
+          <h3>最终能得到什么成果？</h3>
+          <p>您将收到一份报告，内容包括候选企业概况、经营产品、业务角色、交易匹配度、推荐依据、联系信息和优先顺序，以及用于销售提案、采购咨询和报价请求的多语言邮件草稿。</p>
+        </div>
+        <div class="faq-item">
+          <h3>只能用于特定国家或品类吗？</h3>
+          <p>不是。不限定特定国家或品类，支持搜寻销售渠道和供货渠道。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact">
+      <div class="eyebrow">联系我们</div>
+      <h2>先用您目前经营的产品，看看会出现哪些合作伙伴。</h2>
+      <div class="contact-row">
+        <span class="note">PartnerFit 可免费使用。</span>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <footer>
+    <span>© 2026 PartnerFit</span>
+    <span>最后更新 <time datetime="2026-10-26">2026-10-26</time></span>
+    <span>AI 驱动的全球买家与供应商开发服务</span>
+  </footer>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, OAuthProvider, signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { firebaseConfig } from "../firebase-config.js";
+
+// Keep the sign-in UI hidden while the config values are still empty.
+if (!firebaseConfig.apiKey || firebaseConfig.apiKey.startsWith("YOUR_")) {
+  console.info("Before Firebase setup: sign-in buttons hidden");
+} else {
+  const auth = getAuth(initializeApp(firebaseConfig));
+  const box = document.getElementById("auth");
+  const who = document.getElementById("auth-who");
+  const btn = document.getElementById("auth-btn");
+  const kakao = document.getElementById("auth-kakao");
+  box.hidden = false;
+
+  btn.addEventListener("click", async () => {
+    try {
+      if (auth.currentUser) await signOut(auth);
+      else await signInWithPopup(auth, new GoogleAuthProvider());
+    } catch (e) {
+      console.error(e);
+      if (e.code !== "auth/popup-closed-by-user") btn.textContent = "登录失败，请重试";
+    }
+  });
+
+  kakao.addEventListener("click", async () => {
+    try {
+      const provider = new OAuthProvider("oidc.kakao");
+      provider.addScope("openid");
+      await signInWithPopup(auth, provider);
+    } catch (e) {
+      console.error(e);
+      if (e.code !== "auth/popup-closed-by-user") kakao.textContent = "登录失败，请重试";
+    }
+  });
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      who.textContent = user.displayName || "已登录";
+      who.hidden = false;
+      btn.textContent = "退出登录";
+      kakao.hidden = true;
+    } else {
+      who.hidden = true;
+      btn.textContent = "使用 Google 登录";
+      kakao.hidden = false;
+      kakao.textContent = "使用 Kakao 登录";
+    }
+  });
+}
+</script>
+
+</body>
+</html>
