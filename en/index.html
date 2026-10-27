@@ -6,7 +6,7 @@
 <meta name="google-site-verification" content="ZQdGMIHGPKnsdlQxcjTY3EKxHMFjeM6UEE6RJKSs4Ys">
 <meta name="naver-site-verification" content="7a96e30319742b06eb6045054c26ec27d5f268b6">
 <title>PartnerFit | AI Overseas Buyer & Supplier Discovery</title>
-<meta name="description" content="Enter your company and product details, and AI searches for overseas buyer and supplier candidates, then automatically creates a fit-analysis report and tailored email drafts.">
+<meta name="description" content="Enter your company and product details, and AI finds overseas buyer and supplier candidates, compiles them into a report with source links, and drafts a first-contact email.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://partnerfit-nine.vercel.app/en/">
 <!--HREFLANG--><link rel="alternate" hreflang="ko" href="https://partnerfit-nine.vercel.app/">
@@ -18,7 +18,7 @@
 <meta property="og:site_name" content="PartnerFit">
 <meta property="og:locale" content="en_US">
 <meta property="og:title" content="PartnerFit | AI Overseas Buyer & Supplier Discovery">
-<meta property="og:description" content="Enter your company and product details, and AI searches for overseas buyer and supplier candidates, then automatically creates a fit-analysis report and tailored email drafts.">
+<meta property="og:description" content="Enter your company and product details, and AI finds overseas buyer and supplier candidates, compiles them into a report with source links, and drafts a first-contact email.">
 <meta property="og:url" content="https://partnerfit-nine.vercel.app/en/">
 <meta property="og:image" content="https://partnerfit-nine.vercel.app/og-image-en.png">
 <meta property="og:image:width" content="1200">
@@ -27,7 +27,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://partnerfit-nine.vercel.app/og-image-en.png">
 <meta name="twitter:title" content="PartnerFit | AI Overseas Buyer & Supplier Discovery">
-<meta name="twitter:description" content="Enter your company and product details, and AI searches for overseas buyer and supplier candidates, then automatically creates a fit-analysis report and tailored email drafts.">
+<meta name="twitter:description" content="Enter your company and product details, and AI finds overseas buyer and supplier candidates, compiles them into a report with source links, and drafts a first-contact email.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -38,7 +38,7 @@
       "name": "PartnerFit",
       "alternateName": "파트너핏",
       "url": "https://partnerfit-nine.vercel.app/",
-      "description": "A service that uses AI to search for and recommend overseas buyer and supplier candidates based on company and product information, and automatically creates an analysis report and tailored email drafts"
+      "description": "A service that finds overseas buyer and supplier candidates from company and product information and compiles them into a sourced report and email drafts"
     },
     {
       "@type": "WebSite",
@@ -68,28 +68,28 @@
         },
         {
           "@type": "Question",
-          "name": "What is PartnerFit?",
-          "acceptedAnswer": { "@type": "Answer", "text": "PartnerFit is a service that uses AI to search for and recommend overseas buyer and supplier candidates based on your company and product information, and automatically produces an analysis report and tailored email drafts." }
+          "name": "What results do I get?",
+          "acceptedAnswer": { "@type": "Answer", "text": "You get a report covering up to 10 candidates: overview, score, reasons for recommendation (with source links), publicly listed contact details, and an email draft for each candidate. You can save it as a PDF." }
         },
         {
           "@type": "Question",
           "name": "How does buyer discovery differ from supplier discovery?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Buyer discovery finds importers, distributors, brand companies and industrial end-users that match your product and supply terms; supplier discovery finds manufacturers, raw-material and component suppliers, and OEM/ODM companies that match your purchasing terms. The evaluation criteria also differ: for buyers, the focus is the products they handle and their distribution or procurement methods; for suppliers, it is supply capability, specifications, volume and lead time." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Buyer discovery finds importers, distributors and end-user companies that would buy your product; supplier discovery finds manufacturers, component makers and OEM/ODM partners that can make what you need. The evaluation criteria differ too: buyers are judged mainly on the products they handle and their distribution method, suppliers on supply capability, specifications, volume and lead time." }
         },
         {
           "@type": "Question",
-          "name": "What information do I need to enter?",
-          "acceptedAnswer": { "@type": "Answer", "text": "You enter your company type, business model, manufacturing and supply capability, the products you want to sell or buy, specifications, price range, volume and certifications, and your target market and trade terms." }
+          "name": "What do I enter?",
+          "acceptedAnswer": { "@type": "Answer", "text": "You enter the partner criteria you are looking for and your company and product details. Some fields are required and the rest are optional; the more detail you give, the more accurate the results." }
         },
         {
           "@type": "Question",
-          "name": "What do I receive as output?",
-          "acceptedAnswer": { "@type": "Answer", "text": "You receive a report covering candidate company overviews, products handled, business roles, trade fit, reasons for recommendation, contact information and priorities, plus multilingual email drafts for sales proposals, purchase inquiries and quotation requests." }
+          "name": "Can I rely on the results as they are?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. It is reference material that AI compiles from public web information. Check the source links and verify the company's details yourself before making contact. Items that could not be verified are marked 'needs verification'." }
         },
         {
           "@type": "Question",
-          "name": "Can it only be used for specific countries or products?",
-          "acceptedAnswer": { "@type": "Answer", "text": "No. It supports searching for sales and supply sources without limiting you to specific countries or products." }
+          "name": "How is the information I enter used?",
+          "acceptedAnswer": { "@type": "Answer", "text": "You use the service after signing in, and if you consent, your inputs and results are stored and analysed to improve matching quality. API keys are never stored. You can delete your records yourself with 'Delete my records' in the service screen." }
         }
       ]
     }
@@ -130,7 +130,7 @@ h1,h2,h3{font-family:var(--display);font-weight:650;letter-spacing:-0.01em;
   text-wrap:balance;margin:0}
 p{margin:0}
 a{color:inherit}
-.wrap{max-width:920px;margin:0 auto}
+.wrap{max-width:1000px;margin:0 auto}
 .eyebrow{font-family:var(--utility);font-size:13px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--mono)}
 
@@ -167,11 +167,17 @@ body{overflow-wrap:break-word}
 .auth .btn{padding:10px 14px;font-size:14px}
 
 /* ---- hero ---- */
-.hero{padding-block:64px 48px;border-bottom:1px solid var(--border)}
+.hero{padding-block:56px 56px;border-bottom:1px solid var(--border)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:40px;align-items:center}
 .hero .eyebrow{margin-bottom:16px}
-.hero h1{font-size:clamp(32px,5vw,50px);line-height:1.08;max-width:14ch}
-.hero .sub{margin-top:20px;max-width:46ch;font-size:17px;color:var(--muted)}
-.hero .ctas{margin-top:32px;display:flex;gap:12px;flex-wrap:wrap}
+.hero h1{font-size:clamp(26px,3.3vw,36px);line-height:1.2}
+.hero .sub{margin-top:20px;max-width:44ch;font-size:17px;color:var(--muted)}
+.hero .ctas{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap}
+.hero .beta{margin-top:16px;font-size:13px;color:var(--mono)}
+.hero-fig{margin:0}
+.hero-fig img{width:100%;height:auto;display:block;border:1px solid var(--border);border-radius:6px;
+  box-shadow:0 10px 30px rgba(30,58,110,.14)}
+.hero-fig figcaption{margin-top:10px;font-size:13px;color:var(--mono)}
 .btn{font-family:var(--body);font-size:14px;font-weight:600;padding:12px 20px;
   border-radius:3px;border:1px solid var(--border);text-decoration:none;
   display:inline-flex;align-items:center;gap:8px;cursor:pointer;background:none;color:var(--fg)}
@@ -182,7 +188,7 @@ body{overflow-wrap:break-word}
 .line{display:flex;gap:18px;align-items:baseline;padding-block:40px 24px}
 .line .idx{font-family:var(--utility);font-size:13px;color:var(--accent);
   flex-shrink:0;padding-top:4px}
-.line h2{font-size:24px}
+.line h2{font-size:26px}
 
 section{border-bottom:1px solid var(--border)}
 section:last-of-type{border-bottom:none}
@@ -197,7 +203,21 @@ section:last-of-type{border-bottom:none}
 .card h3{font-size:17px;margin-top:8px}
 .card p{margin-top:10px;font-size:14px;color:var(--muted)}
 
-/* ---- process ---- */
+/* ---- steps (4 columns) / features (3 columns) / callout ---- */
+.steps4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.s4{border-top:2px solid var(--accent);padding-top:14px;min-width:0}
+.s4 .n{font-family:var(--utility);font-size:26px;color:var(--accent);line-height:1}
+.s4 h3{font-size:16px;margin-top:12px}
+.s4 p{margin-top:8px;font-size:14px;color:var(--muted)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.callout{border-left:3px solid var(--accent);background:var(--surface);padding:16px 20px;margin-top:32px;
+  border-radius:0 4px 4px 0;max-width:72ch}
+.callout h3{font-size:15px}
+.callout p{margin-top:6px;font-size:14px;color:var(--muted)}
+.band{background:var(--surface);margin-inline:-20px;padding-inline:20px;border-block:1px solid var(--border)}
+.intro{max-width:66ch;font-size:17px}
+footer a{color:inherit}
+/* ---- process (legacy) ---- */
 .process{display:flex;flex-direction:column}
 .step{display:grid;grid-template-columns:40px 1fr;gap:16px;padding-block:16px;
   border-top:1px solid var(--border)}
@@ -222,7 +242,13 @@ section:last-of-type{border-bottom:none}
 footer{padding-block:28px;display:flex;justify-content:space-between;gap:12px;
   flex-wrap:wrap;font-size:13px;color:var(--mono)}
 
+@media (max-width:860px){
+  .hero-grid{grid-template-columns:1fr;gap:28px}
+  .steps4{grid-template-columns:1fr 1fr}
+  .grid3{grid-template-columns:1fr}
+}
 @media (max-width:620px){
+  .steps4{grid-template-columns:1fr}
   .grid2,.grid4{grid-template-columns:1fr}
   nav{gap:12px;font-size:14px}
   header>.lang,.auth{margin-left:0}
@@ -260,119 +286,85 @@ footer time{font-family:var(--utility)}
 
   <main>
   <section class="hero">
-    <div class="eyebrow">AI-powered global buyer & supplier discovery</div>
-    <h1>Overseas partner search,<br>in a single report.</h1>
-    <p class="sub">Enter your company and product details, and AI searches for buyer and supplier candidates worldwide and automatically creates a fit-analysis report and tailored email drafts.</p>
-    <div class="ctas">
-      <a href="/app/" class="btn primary">Use the service</a>
-      <a href="#process" class="btn">See how it works</a>
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">AI buyer & supplier discovery (beta)</div>
+        <h1>Finding overseas partners,<br>as a sourced candidate list.</h1>
+        <p class="sub">Enter your company and products, and AI finds up to 10 buyer or supplier candidates from public web information, then produces a report with source links for each candidate and a first-contact email draft.</p>
+        <div class="ctas">
+          <a href="/app/" class="btn primary">Use the service</a>
+          <a href="#process" class="btn">See how it works</a>
+        </div>
+        <p class="beta">In beta · The service is free of charge</p>
+      </div>
+      <figure class="hero-fig">
+        <img src="../report-example-en.png" width="1000" height="720" alt="Example PartnerFit report (fictional data): fit score per candidate, reasons and sources, verification status of public contacts, approach priority">
+        <figcaption>An example report built from fictional data. The companies and scores are not real.</figcaption>
+      </figure>
     </div>
   </section>
 
   <section id="service">
-    <div class="line"><span class="idx">01 — Overview</span><h2>What kind of service is PartnerFit?</h2></div>
+    <div class="line"><h2>Who it is built for</h2></div>
     <div class="section-body">
-      <p style="max-width:64ch;color:var(--fg);font-size:16px">
-        PartnerFit is a service that uses AI to search for and recommend overseas buyer and supplier candidates based on your company and product information, and automatically produces an analysis report and tailored email drafts.
-      </p>
-      <p style="max-width:64ch;color:var(--muted);font-size:15px;margin-top:12px">
-        Not tied to specific countries or products, it searches worldwide for sales and supply sources at the same time.
-        It analyzes your company type, product information and trade terms together, and shortlists only the partners that fit your current way of doing business.
-      </p>
-      <p style="max-width:64ch;color:var(--muted);font-size:14px;margin-top:12px">
-        Reference (basis and source): As an example of a paid overseas buyer-search service from a public agency, KOTRA's Export24 lists potential-buyer discovery at KRW 150,000 per company (excluding VAT). PartnerFit, by contrast, charges no service fee (AI usage costs are billed to your own API account).
-        Source: <a href="https://www.kotra.or.kr/upload/2024/11/05/BM202411050000045376_0.pdf" rel="noopener" style="color:var(--accent)">KOTRA Export24 Global Agency (Overseas Market Research) Service Guide (based on terms effective Nov 2024)</a>
-      </p>
+      <p class="intro">PartnerFit is an AI service that finds overseas buyer and supplier candidates. It picks only the candidates that match your criteria and shows why they match, with sources.</p>
       <div class="grid2" style="margin-top:28px">
         <div class="card">
           <div class="tag">Buyer discovery</div>
-          <h3>Companies looking to expand overseas sales channels</h3>
-          <p>When manufacturers, brand companies and trading companies look for overseas importers, distributors and industrial end-users.</p>
+          <h3>When you want to sell</h3>
+          <p>When a manufacturer, brand or trading company looks for overseas importers, distributors, or companies that use the product.</p>
         </div>
         <div class="card">
           <div class="tag">Supplier discovery</div>
-          <h3>Companies looking to secure overseas supply sources</h3>
-          <p>When looking overseas for manufacturers and OEM/ODM suppliers of raw materials, components and finished products.</p>
+          <h3>When you want to source</h3>
+          <p>When you look for overseas manufacturers and OEM/ODM partners to make raw materials, components or finished goods.</p>
         </div>
       </div>
-      <p style="margin-top:24px;font-size:14px;color:var(--mono)">
-        A shared challenge: gathering company information scattered across languages, comparing and shortlisting candidates, and preparing the first contact
-        takes time and people. Even for the same product, the right counterpart differs depending on the company type and business model.
-      </p>
     </div>
   </section>
 
-  <section id="process">
-    <div class="line"><span class="idx">02 — Flow</span><h2>How does it work? Five steps from input to email drafts</h2></div>
+  <section id="process" class="band">
+    <div class="line"><h2>How it works</h2></div>
     <div class="section-body">
-      <div class="process">
-        <div class="step">
-          <div class="num">01</div>
-          <div><div class="label">Enter your information</div>
-            <div class="desc">Enter your company type, business model, manufacturing and supply capability, products to sell or buy, specifications, price range, volume, certifications, and your target market and trade terms.</div></div>
-        </div>
-        <div class="step">
-          <div class="num">02</div>
-          <div><div class="label">AI global company search</div>
-            <div class="desc">Buyer discovery searches for importers, distributors, brand companies and industrial end-users; supplier discovery searches for manufacturers, component suppliers and OEM/ODM companies.</div></div>
-        </div>
-        <div class="step">
-          <div class="num">03</div>
-          <div><div class="label">Fit analysis</div>
-            <div class="desc">Candidates are compared and evaluated on the products they handle, their business role and how well they match your trade terms.</div></div>
-        </div>
-        <div class="step">
-          <div class="num">04</div>
-          <div><div class="label">Automatic report generation</div>
-            <div class="desc">A report covering candidate company overviews, reasons for recommendation, contact information and priorities is created automatically.</div></div>
-        </div>
-        <div class="step">
-          <div class="num">05</div>
-          <div><div class="label">Email draft writing</div>
-            <div class="desc">Drafts for sales proposals, purchase inquiries and quotation requests that reflect the characteristics of you and the candidate company are prepared in multiple languages.</div></div>
-        </div>
+      <div class="steps4">
+        <div class="s4"><div class="n">1</div><h3>Enter your criteria</h3>
+          <p>Describe the partner type and countries you want, plus your products and trade terms. Only a few fields are required.</p></div>
+        <div class="s4"><div class="n">2</div><h3>AI searches the web</h3>
+          <p>It searches the public web to gather candidates and filters out those it cannot support with evidence.</p></div>
+        <div class="s4"><div class="n">3</div><h3>Scores and evidence</h3>
+          <p>Candidates are scored on seven criteria, such as product fit, business role and credit clues, and each gets source links.</p></div>
+        <div class="s4"><div class="n">4</div><h3>Report and email drafts</h3>
+          <p>Save the report as a PDF. Each candidate's first-contact email draft is written in the language of the counterpart's country (Korean, English, Chinese or Japanese), and in English for all other countries.</p></div>
       </div>
     </div>
   </section>
 
   <section id="edge">
-    <div class="line"><span class="idx">03 — Features</span><h2>What are PartnerFit's features?</h2></div>
+    <div class="line"><h2>What sets it apart</h2></div>
     <div class="section-body">
-      <div class="grid4">
+      <div class="grid3">
         <div class="feat">
-          <div class="eyebrow">Tailored matching</div>
-          <h3>Business model × product characteristics × trade terms</h3>
-          <p>Reflecting all three together, it finds a different suitable counterpart for each company, even for the same product.</p>
+          <h3>No candidate without evidence</h3>
+          <p>Every candidate carries source links. Contact details that could not be verified are marked 'needs verification', and candidates without evidence are left out of the report.</p>
         </div>
         <div class="feat">
-          <div class="eyebrow">Purpose-specific analysis</div>
-          <h3>Buyers and suppliers, different criteria</h3>
-          <p>Buyers are evaluated mainly on the products they handle and their distribution and procurement methods; suppliers on supply capability, specifications, volume and lead time.</p>
+          <h3>Buyers and suppliers are judged differently</h3>
+          <p>Buyers are weighed more on the products they handle and how they distribute; suppliers on supply capability, specifications, volume and lead time.</p>
         </div>
         <div class="feat">
-          <div class="eyebrow">Sales and sourcing combined</div>
-          <h3>Two-way search from one set of company information</h3>
-          <p>Using the same company and product information, you can search for buyers and suppliers at the same time.</p>
+          <h3>Runs on your own API key</h3>
+          <p>The service itself is free. AI usage fees are billed to your own OpenAI or Anthropic account, and your API key is never stored.</p>
         </div>
-        <div class="feat">
-          <div class="eyebrow">AI automation</div>
-          <h3>Continuous processing from search to email drafts</h3>
-          <p>Multilingual information search, candidate comparison, reports and email drafting are connected in a single flow.</p>
-        </div>
+      </div>
+      <div class="callout">
+        <h3>Good to know</h3>
+        <p>The AI judges only from public web information, so errors are possible. Credit standing is estimated from public clues and is not a credit check. Check the source links and company details yourself before making contact.</p>
       </div>
     </div>
   </section>
 
-  <section id="report">
-    <div class="line"><span class="idx">Example</span><h2>This is how the report is structured</h2></div>
-    <div class="section-body">
-      <p style="max-width:64ch;color:var(--muted);font-size:14px;margin-bottom:20px">Below is an example showing the structure of the report items. It contains no real company names or figures, and results vary depending on the product and market conditions you enter.</p>
-      <img src="../report-example-en.png" width="1000" height="520" loading="lazy" style="max-width:100%;height:auto;border:1px solid var(--border);border-radius:4px;margin-bottom:20px" alt="PartnerFit report structure example: four items — candidate company overview, trade fit, contact information and priority, and email drafts">
-    </div>
-  </section>
-
   <section id="faq">
-    <div class="line"><span class="idx">04 — FAQ</span><h2>Frequently asked questions</h2></div>
+    <div class="line"><h2>Frequently asked questions</h2></div>
     <div class="section-body">
       <div class="faq">
         <div class="faq-item">
@@ -380,24 +372,24 @@ footer time{font-family:var(--utility)}
           <p>Yes. PartnerFit itself is free to use. However, the API usage cost of running the AI is billed to your own AI provider account (OpenAI or Anthropic).</p>
         </div>
         <div class="faq-item">
-          <h3>What is PartnerFit?</h3>
-          <p>PartnerFit is a service that uses AI to search for and recommend overseas buyer and supplier candidates based on your company and product information, and automatically produces an analysis report and tailored email drafts.</p>
+          <h3>What results do I get?</h3>
+          <p>You get a report covering up to 10 candidates: overview, score, reasons for recommendation (with source links), publicly listed contact details, and an email draft for each candidate. You can save it as a PDF.</p>
         </div>
         <div class="faq-item">
           <h3>How does buyer discovery differ from supplier discovery?</h3>
-          <p>Buyer discovery finds importers, distributors, brand companies and industrial end-users that match your product and supply terms; supplier discovery finds manufacturers, raw-material and component suppliers, and OEM/ODM companies that match your purchasing terms. The evaluation criteria also differ: for buyers, the focus is the products they handle and their distribution or procurement methods; for suppliers, it is supply capability, specifications, volume and lead time.</p>
+          <p>Buyer discovery finds importers, distributors and end-user companies that would buy your product; supplier discovery finds manufacturers, component makers and OEM/ODM partners that can make what you need. The evaluation criteria differ too: buyers are judged mainly on the products they handle and their distribution method, suppliers on supply capability, specifications, volume and lead time.</p>
         </div>
         <div class="faq-item">
-          <h3>What information do I need to enter?</h3>
-          <p>You enter your company type, business model, manufacturing and supply capability, the products you want to sell or buy, specifications, price range, volume and certifications, and your target market and trade terms.</p>
+          <h3>What do I enter?</h3>
+          <p>You enter the partner criteria you are looking for and your company and product details. Some fields are required and the rest are optional; the more detail you give, the more accurate the results.</p>
         </div>
         <div class="faq-item">
-          <h3>What do I receive as output?</h3>
-          <p>You receive a report covering candidate company overviews, products handled, business roles, trade fit, reasons for recommendation, contact information and priorities, plus multilingual email drafts for sales proposals, purchase inquiries and quotation requests.</p>
+          <h3>Can I rely on the results as they are?</h3>
+          <p>No. It is reference material that AI compiles from public web information. Check the source links and verify the company's details yourself before making contact. Items that could not be verified are marked 'needs verification'.</p>
         </div>
         <div class="faq-item">
-          <h3>Can it only be used for specific countries or products?</h3>
-          <p>No. It supports searching for sales and supply sources without limiting you to specific countries or products.</p>
+          <h3>How is the information I enter used?</h3>
+          <p>You use the service after signing in, and if you consent, your inputs and results are stored and analysed to improve matching quality. API keys are never stored. You can delete your records yourself with 'Delete my records' in the service screen.</p>
         </div>
       </div>
     </div>
@@ -418,7 +410,7 @@ footer time{font-family:var(--utility)}
   <footer>
     <span>© 2026 PartnerFit</span>
     <span>Last updated <time datetime="2026-10-27">2026-10-27</time></span>
-    <span>AI-powered global buyer & supplier discovery service</span>
+    <span><a href="/privacy/">Privacy policy (Korean)</a> · AI-powered global buyer & supplier discovery service</span>
   </footer>
 </div>
 
