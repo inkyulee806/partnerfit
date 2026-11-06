@@ -233,6 +233,11 @@ footer a{color:inherit}
 .feat h3{font-size:16px;margin-top:6px}
 .feat p{margin-top:8px;font-size:14px;color:var(--muted)}
 
+.info{display:grid;grid-template-columns:140px 1fr;gap:0;border:1px solid var(--border);border-radius:4px;background:var(--surface);margin:0}
+.info dt,.info dd{margin:0;padding:14px 18px;border-top:1px solid var(--border);font-size:15px}
+.info dt{color:var(--mono);font-family:var(--utility);font-size:13px}
+.info dt:first-of-type,.info dt:first-of-type+dd{border-top:0}
+@media(max-width:600px){.info{grid-template-columns:1fr}.info dt{padding-bottom:0;border-top:1px solid var(--border)}.info dd{border-top:0;padding-top:4px}}
 /* ---- contact ---- */
 .contact{padding-block:48px;display:flex;flex-direction:column;gap:18px}
 .contact h2{font-size:26px;max-width:18ch}
@@ -395,6 +400,20 @@ footer time{font-family:var(--utility)}
     </div>
   </section>
 
+  <section id="info">
+    <div class="line"><h2>서비스 정보</h2></div>
+    <div class="section-body">
+      <dl class="info">
+        <dt>대상</dt><dd>해외 바이어나 공급처를 찾으려는 수출입 기업과 담당자. 자격 제한은 없습니다.</dd>
+        <dt>주소</dt><dd>가상 주소 (온라인 서비스이며 방문 접수는 없습니다)</dd>
+        <dt>운영 시간</dt><dd>24시간 연중무휴 (온라인)</dd>
+        <dt>가격</dt><dd>무료 (AI 사용 비용은 본인 API 계정에 따로 청구)</dd>
+        <dt>이용 자격</dt><dd>제한 없음</dd>
+        <dt>연락처</dt><dd>+00-000-0000 (임시 가상 번호)</dd>
+      </dl>
+    </div>
+  </section>
+
   <section id="start">
     <div class="contact">
       <div class="eyebrow">이용하기</div>
@@ -409,7 +428,7 @@ footer time{font-family:var(--utility)}
 
   <footer>
     <span>© 2026 PartnerFit</span>
-    <span>최종 수정 <time datetime="2026-10-27">2026-10-27</time></span>
+    <span>최종 수정 <time datetime="2026-11-06">2026-11-06</time></span>
     <span><a href="/privacy/">개인정보 처리방침</a> · AI 기반 글로벌 바이어 · 서플라이어 발굴 서비스</span>
   </footer>
 </div>

@@ -233,6 +233,11 @@ footer a{color:inherit}
 .feat h3{font-size:16px;margin-top:6px}
 .feat p{margin-top:8px;font-size:14px;color:var(--muted)}
 
+.info{display:grid;grid-template-columns:140px 1fr;gap:0;border:1px solid var(--border);border-radius:4px;background:var(--surface);margin:0}
+.info dt,.info dd{margin:0;padding:14px 18px;border-top:1px solid var(--border);font-size:15px}
+.info dt{color:var(--mono);font-family:var(--utility);font-size:13px}
+.info dt:first-of-type,.info dt:first-of-type+dd{border-top:0}
+@media(max-width:600px){.info{grid-template-columns:1fr}.info dt{padding-bottom:0;border-top:1px solid var(--border)}.info dd{border-top:0;padding-top:4px}}
 /* ---- contact ---- */
 .contact{padding-block:48px;display:flex;flex-direction:column;gap:18px}
 .contact h2{font-size:26px;max-width:18ch}
@@ -395,6 +400,20 @@ footer time{font-family:var(--utility)}
     </div>
   </section>
 
+  <section id="info">
+    <div class="line"><h2>服务信息</h2></div>
+    <div class="section-body">
+      <dl class="info">
+        <dt>适用对象</dt><dd>希望寻找海外买家或供应商的进出口企业及其负责人。无资格限制。</dd>
+        <dt>地址</dt><dd>虚拟地址（线上服务，不接待上门访问）</dd>
+        <dt>运营时间</dt><dd>全年无休，24 小时（线上）</dd>
+        <dt>价格</dt><dd>免费（AI 使用费用另行计入您自己的 API 账户）</dd>
+        <dt>使用资格</dt><dd>无限制</dd>
+        <dt>联系方式</dt><dd>+00-000-0000（临时虚拟号码）</dd>
+      </dl>
+    </div>
+  </section>
+
   <section id="start">
     <div class="contact">
       <div class="eyebrow">开始使用</div>
@@ -409,7 +428,7 @@ footer time{font-family:var(--utility)}
 
   <footer>
     <span>© 2026 PartnerFit</span>
-    <span>最后更新 <time datetime="2026-10-27">2026-10-27</time></span>
+    <span>最后更新 <time datetime="2026-11-06">2026-11-06</time></span>
     <span><a href="/privacy/">隐私政策（韩文）</a> · AI 驱动的全球买家与供应商开发服务</span>
   </footer>
 </div>

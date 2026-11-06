@@ -233,6 +233,11 @@ footer a{color:inherit}
 .feat h3{font-size:16px;margin-top:6px}
 .feat p{margin-top:8px;font-size:14px;color:var(--muted)}
 
+.info{display:grid;grid-template-columns:140px 1fr;gap:0;border:1px solid var(--border);border-radius:4px;background:var(--surface);margin:0}
+.info dt,.info dd{margin:0;padding:14px 18px;border-top:1px solid var(--border);font-size:15px}
+.info dt{color:var(--mono);font-family:var(--utility);font-size:13px}
+.info dt:first-of-type,.info dt:first-of-type+dd{border-top:0}
+@media(max-width:600px){.info{grid-template-columns:1fr}.info dt{padding-bottom:0;border-top:1px solid var(--border)}.info dd{border-top:0;padding-top:4px}}
 /* ---- contact ---- */
 .contact{padding-block:48px;display:flex;flex-direction:column;gap:18px}
 .contact h2{font-size:26px;max-width:18ch}
@@ -395,6 +400,20 @@ footer time{font-family:var(--utility)}
     </div>
   </section>
 
+  <section id="info">
+    <div class="line"><h2>サービス情報</h2></div>
+    <div class="section-body">
+      <dl class="info">
+        <dt>対象</dt><dd>海外のバイヤーやサプライヤーを探す輸出入企業とその担当者。利用資格の制限はありません。</dd>
+        <dt>住所</dt><dd>架空の住所（オンラインサービスのため来訪受付はありません）</dd>
+        <dt>運営時間</dt><dd>24時間365日（オンライン）</dd>
+        <dt>料金</dt><dd>無料（AIの利用料金はご自身のAPIアカウントに別途請求されます）</dd>
+        <dt>利用資格</dt><dd>制限なし</dd>
+        <dt>連絡先</dt><dd>+00-000-0000（仮の架空番号）</dd>
+      </dl>
+    </div>
+  </section>
+
   <section id="start">
     <div class="contact">
       <div class="eyebrow">ご利用開始</div>
@@ -409,7 +428,7 @@ footer time{font-family:var(--utility)}
 
   <footer>
     <span>© 2026 PartnerFit</span>
-    <span>最終更新 <time datetime="2026-10-27">2026-10-27</time></span>
+    <span>最終更新 <time datetime="2026-11-06">2026-11-06</time></span>
     <span><a href="/privacy/">プライバシーポリシー（韓国語）</a> · AIによるグローバルなバイヤー・サプライヤー発掘サービス</span>
   </footer>
 </div>
