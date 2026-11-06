@@ -85,4 +85,6 @@ P = [
 ('제한 없음', 'No restrictions', '无限制', '制限なし'),
 ('>연락처</dt>', '>Contact</dt>', '>联系方式</dt>', '>連絡先</dt>'),
 ('+00-000-0000 (임시 가상 번호)', '+00-000-0000 (temporary fictional number)', '+00-000-0000（临时虚拟号码）', '+00-000-0000（仮の架空番号）'),
+('>운영 주체</dt>', '>Operator</dt>', '>运营主体</dt>', '>運営主体</dt>'),
+('<dd>인큘리코퍼레이션</dd>', '<dd>Inkyulee Corporation</dd>', '<dd>Inkyulee Corporation</dd>', '<dd>Inkyulee Corporation</dd>'),
 ]
